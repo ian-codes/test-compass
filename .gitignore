@@ -1,0 +1,19 @@
+.vscode/
+.pyc
+.env
+.venv
+env/
+venv/
+*.mo
+__pycache__
+staticfiles/
+node_modules/
+testcompass_backend/local_settings.py
+node_modules/
+
+# SQLite3 database files:
+*.db
+*.sqlite
+*.sqlite3
+
+.DS_Store
