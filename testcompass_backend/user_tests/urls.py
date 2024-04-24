@@ -16,9 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path, re_path
-
+from .views import TestView
 
 app_name = 'user_tests'
 urlpatterns = [
-
+    path('', TestView.as_view(), name='test_view'),
 ]
