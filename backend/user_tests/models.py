@@ -8,6 +8,11 @@ class Project(models.Model):
     name = models.CharField(max_length=150, blank=False, null=False, verbose_name="Name")
     description = models.TextField(verbose_name="Beschreibung", blank=True, null=True, max_length=250)
     created_at = models.DateTimeField(default=timezone.now, verbose_name="Erstellt am")
+    
+    user_list = models.ManyToManyField(
+        User, verbose_name="Mitarbeiter der Organisation",
+        related_name="project_users",
+    )
 
     def __str__(self):
         return self.name
