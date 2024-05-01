@@ -66,7 +66,10 @@ class SignupView(View):
 
         if(form_data.get("organization_name")):
             organization = Organization.objects.create(name=form_data.get("organization_name"))
-            profile = UserProfile.objects.create(organization=organization, role=Roles.ORGANIZATION_LEADER, user=new_user)
+            profile = UserProfile.objects.get(user=new_user)
+            profile.organization = organization
+            profile.role = Roles.ORGANIZATION_LEADER
+            profile.save()
 
         
         return JsonResponse({"token": token.key}, status=201)

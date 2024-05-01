@@ -25,11 +25,20 @@ class UserProfile(models.Model):
         on_delete=models.SET_NULL, null=True, blank=True)
     
     def __str__(self):
-        return f"{self.organization.name}-{self.user.username}"
+        return f"{self.user.username}"
 
 
 class Organization(models.Model):
     name = models.CharField(max_length=150, blank=False, null=False, verbose_name="Name")
+
+
+
+def create_user_profile(sender, instance, created, **kwargs):  
+    if created: 
+       profile, created = UserProfile.objects.get_or_create(user=instance)  
+
+post_save.connect(create_user_profile, sender=User) 
+
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
