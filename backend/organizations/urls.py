@@ -17,9 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path, re_path
 from rest_framework.authtoken.views import obtain_auth_token
+from .views import SignupView
 
 app_name = 'organizations'
 urlpatterns = [
     path('auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('login/', obtain_auth_token)
+    path('login/', obtain_auth_token),
+    path('account/register/', SignupView.as_view())
 ]
