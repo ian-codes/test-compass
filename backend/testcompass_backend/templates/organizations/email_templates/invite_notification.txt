@@ -1,0 +1,15 @@
+{% autoescape off %}
+Guten Tag {{user.first_name}} {{user.last_name}}
+
+
+Sie wurden soeben in die Organisation {{organization.name}} eingeladen. Klicken Sie auf den untenstehenden Link um die Einladung anzunehmen
+
+{{invite_link}}
+
+
+Mit freundlichen Grüssen
+Ihr Test-Compass Team
+
+
+
+{% endautoescape %}
