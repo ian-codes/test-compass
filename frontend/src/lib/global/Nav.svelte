@@ -42,7 +42,7 @@
                 <a on:click={handleClick}
                 title="{item.title}" href="{item.slug}"
                 class=" dark:text-white hover:text-white hover:bg-slate-500
-                transition-all text-end block text-nowrap p-4">
+                transition-all text-end block text-nowrap p-6">
                     {item.title}
                 </a>
             </li>

@@ -1,4 +1,4 @@
-export async function handle({ request, resolve }) {
+/* export async function handle({ request, resolve }) {
     const cookies = request.headers.cookie || '';
     const user = getUserFromCookies(cookies); // Decode user info from HttpOnly cookie
 
@@ -8,5 +8,5 @@ export async function handle({ request, resolve }) {
     const response = await resolve(request);
 
     // You can modify or add headers to the response here if needed
-    return response;
-}
+    return response; 
+} */
