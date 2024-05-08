@@ -17,11 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path, re_path
 from rest_framework.authtoken.views import obtain_auth_token
-from .views import SignupView
+from .views import SignupView, UserInviteView, OrgInvitationView
 
 app_name = 'organizations'
 urlpatterns = [
     path('auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('login/', obtain_auth_token),
-    path('account/register/', SignupView.as_view())
-]
+    path('account/register/', SignupView.as_view()),
+    path('organization/invite/', UserInviteView.as_view()),
+    path('organization/<int:pk>/invite/<str:hash>/', OrgInvitationView.as_view(), name='organization_invite'),]
