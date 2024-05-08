@@ -36,7 +36,7 @@
         {/each}
     </button>
     <ul class="{(isOpen ? "right-0 w-full" : "-right-full w-0")} z-10 transition-all absolute pt-16 max-w-full
-    shadow-md shadow-slate-300 dark:bg-slate-600 bg-slate-200 top-0 h-min bottom-0 flex flex-col">
+ dark:bg-slate-600 outline bg-slate-200 top-0 h-min bottom-0 flex flex-col">
         {#each menuItems as item}
             <li class="{($page.path == item.title ? "current" : "")}">
                 <a on:click={handleClick}

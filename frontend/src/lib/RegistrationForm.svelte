@@ -1,12 +1,4 @@
 <script>
-    let requestPayload = {
-        email: "",
-        password: "",
-        first_name: "",
-        last_name: "",
-        organization_name: ""
-    }
-
     $: first_name = ["", null]
     $: last_name = ["", null]
     $: email = ["", null]
@@ -14,34 +6,58 @@
     $: isOrganizationManager = false
     $: organization_name = ["", null]
 
+    let registrationFailed = false
 
     async function handleSubmit() {
         if (!validateInputs())
             return
 
-        generatePayload()
-        console.log(requestPayload)
         await makeRegisterPostRequest()
-    }
 
+        resetInputValues()
+    }
 
     function generatePayload() {
-        requestPayload.email = email[0]
-        requestPayload.password = password[0]
-        requestPayload.first_name = first_name[0]
-        requestPayload.last_name = last_name[0]
-        requestPayload.organization_name = organization_name[0]
+        return {
+            email: email[0],
+            password: password[0],
+            first_name: first_name[0],
+            last_name: last_name[0],
+            organization_name: organization_name[0]
+        }
     }
 
+    function resetInputValues() {
+        first_name = ["", null]
+        last_name = ["", null]
+        email = ["", null]
+        password = ["", null]
+        isOrganizationManager = false
+        organization_name = ["", null]
+    }
 
     async function makeRegisterPostRequest() {
-        const token = await fetch("apiURL", {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(requestPayload)
-        })
+        let payload = generatePayload()
+
+        try {
+            const response = await fetch("apiURL", {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            })
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json()
+            return data.token
+        }
+        catch {
+
+        }
     }
 
 
@@ -67,7 +83,7 @@
 
 
 
-<section class="flex flex-col items-center gap-5 
+<section class="dark:bg-slate-600 flex flex-col items-center gap-5 
     py-12 bg-slate-300">
 
     <h2 class="text-center text-xl font-mono font-extralight">
@@ -75,7 +91,7 @@
     </h2>
 
     <form on:submit={handleSubmit}
-        class="flex flex-col gap-5 items-center justify-center">
+        class="flex gap-2 flex-col items-center justify-center">
 
         <div 
             class:invalid={first_name[1] == false}
@@ -158,7 +174,14 @@
             </div>
         {/if}
 
-        <button on:submit={handleSubmit} class="bg-primary px-4 py-2 rounded-lg w-full">Register</button>
+        {#if registrationFailed}
+            <p>Failed to register.</p>
+        {/if}
+
+        <button on:submit={handleSubmit} 
+            class="bg-primary mt-5 px-4 py-2 rounded-lg w-full">
+            Register
+        </button>
     </form>
 
     <a href="/login" class="text-sm underline">Already registered? Log in here.</a>
