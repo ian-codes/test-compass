@@ -89,28 +89,18 @@
                 bind:value={password[0]}
                 id="password" 
                 name="password"
-                type="password"
-                min="6" />
+                minlength="8"
+                type="password" />
         </div>
 
         {#if loginFailed}
             <p>Login failed.</p>
         {/if}
 
-        <button type="submit" class="mt-5 bg-primary px-4 py-2 rounded-lg w-full">
+        <button type="submit" class="btn">
             Log In
         </button>
     </form>
 
     <a href="/register" class="text-sm underline">Don't have an account? Register here.</a>
 </section>
-
-
-<style>
-    .input-container {
-        @apply flex flex-col gap-1  p-2
-    }
-    .invalid {
-        @apply outline outline-red-400 outline-2
-    }
-</style>

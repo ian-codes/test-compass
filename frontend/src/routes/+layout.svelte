@@ -10,7 +10,7 @@
 
     <Header />
     <main class="dark:text-white dark:bg-slate-500
-        h-full bg-slate-100">
+        h-full bg-slate-100 p-2">
         <slot />
     </main>
 </div>

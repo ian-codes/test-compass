@@ -145,7 +145,7 @@
                 id="password" 
                 name="password"
                 type="password"
-                min="6" />
+                minlength="8" />
         </div>
 
         <div>
@@ -179,20 +179,10 @@
         {/if}
 
         <button on:submit={handleSubmit} 
-            class="bg-primary mt-5 px-4 py-2 rounded-lg w-full">
+            class="btn">
             Register
         </button>
     </form>
 
     <a href="/login" class="text-sm underline">Already registered? Log in here.</a>
 </section>
-
-
-<style>
-    .input-container {
-        @apply flex flex-col gap-1  p-2
-    }
-    .invalid {
-        @apply outline outline-red-400 outline-2
-    }
-</style>

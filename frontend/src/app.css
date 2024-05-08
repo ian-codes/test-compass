@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.input-container {
+    @apply flex flex-col gap-1  p-2
+}
+.invalid {
+    @apply outline outline-red-400 outline-2
+}
+.btn {
+    @apply dark:text-black bg-primary mt-5 px-4 py-2 rounded-lg w-full
+}
