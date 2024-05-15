@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-
+from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -51,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'testcompass_backend.middleware.MyCustomMiddleware',
 ]
 
 ROOT_URLCONF = 'testcompass_backend.urls'
@@ -123,6 +124,24 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = "noreply.testcompass@gmail.com"
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'testcompass_backend.authentication.CustomAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
+
+SIMPLE_JWT = {
+'AUTH_COOKIE': 'access_token',  # Cookie name. Enables cookies if value is set.
+'AUTH_COOKIE_DOMAIN': None,     # A string like "example.com", or None for standard domain cookie.
+'AUTH_COOKIE_SECURE': False,    # Whether the auth cookies should be secure (https:// only).
+'AUTH_COOKIE_HTTP_ONLY' : True, # Http only cookie flag.It's not fetch by javascript.
+'AUTH_COOKIE_PATH': '/',        # The path of the auth cookie.
+'AUTH_COOKIE_SAMESITE': 'Lax',  # Whether to set the flag restricting cookie leaks on cross-site requests.
+'ACCESS_TOKEN_LIFETIME':timedelta(days=30),
+}
 
 TEMPLATES = [
     {
