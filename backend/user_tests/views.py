@@ -287,3 +287,40 @@ class DeleteProjectView(View):
         return HttpResponse(
             "deleted", status=200
         )
+
+class DeleteTestView(View):
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        token = Token.objects.get(key=request.COOKIES.get('auth_token'))
+        user = token.user
+        profile = UserProfile.objects.get(user=user)
+        pk = kwargs.get('pk')
+        test_id = kwargs.get('test_id')
+        if not profile.organization:
+            return HttpResponse(
+                "This user has no organization", status=400
+            )
+        project = None
+        try:
+            project = Project.objects.get(pk=pk)
+
+        except Project.DoesNotExist:
+            return HttpResponse(
+                "Project with pk does not exist", status=400
+            )
+
+        if not user in project.user_list.all():
+            return HttpResponse(
+                "Unauthorized", status=403
+            )
+
+        test = UserAcceptanceTest.objects.get(pk=test_id)
+        test.delete()
+
+        return HttpResponse(
+            "deleted", status=200
+        )
