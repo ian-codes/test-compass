@@ -20,10 +20,15 @@ from .views import TestView, TestResultView, TestProcedureView, TestProcedureRes
 
 app_name = 'user_tests'
 urlpatterns = [
-    path('testview', TestView.as_view(), name='test_view'),
-    path('testresultview', TestResultView.as_view(), name='test_results_view'),
-    path('testprocedureview', TestProcedureView.as_view(), name='test_procedure_view'),
-    path('testprocedureresultview', TestProcedureResultView.as_view(), name='test_procedure_results_view'),
-    path('userview', UserView.as_view(), name='user_view'),
-    path('createproject', CreateProjectView.as_view(), name='create_project_view'),
+    path('users/', UserView.as_view(), name='user_view'),
+    path('projects/<int:pk>/tests/', TestView.as_view(), name='test_view'),
+    path('projects/<int:pk>/tests/<int:test_id>/delete/', TestView.as_view(), name='delete_test_view'),
+
+    path('projects/<int:pk>/testprocedures/', TestProcedureView.as_view(), name='test_procedure_view'),
+    
+    path('projects/<int:pk>/tests/results/', TestResultView.as_view(), name='test_results_view'),
+    path('projects/<int:pk>/testprocedures/', TestProcedureView.as_view(), name='test_procedure_view'),
+    path('projects/<int:pk>/testprocedureresults/', TestProcedureResultView.as_view(), name='test_procedure_results_view'),
+    path('projects/create/', CreateProjectView.as_view(), name='create_project_view'),
+
 ]
