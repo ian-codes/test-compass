@@ -1,8 +1,12 @@
+import json
+from rest_framework.authtoken.models import Token
 from django.shortcuts import render
+from django.utils.decorators import method_decorator
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import FormView, ListView, TemplateView, CreateView, DetailView
 from django.http import JsonResponse, HttpResponse, Http404
-from .models import UserAcceptanceTest, UserAcceptanceTestResult, TestProcedureResult, TestProcedure, User
+from .models import UserAcceptanceTest, UserAcceptanceTestResult, TestProcedureResult, TestProcedure, User, Project
 from organizations.models import UserProfile, Organization
 
 
@@ -75,3 +79,29 @@ class UserView(View):
             user_list.append(user_data)
 
         return JsonResponse(user_list, safe=False)
+
+class CreateProjectView(View):
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        token = Token.objects.get(key=request.headers.get("Authorization"))
+        if token.user is not None:
+            user = token.user
+        else:
+            return HttpResponse("invalid user", status=400)
+        profile = UserProfile.objects.get(user=user)
+        organization = profile.organization
+
+        project = Project.objects.create(
+            organization=organization,
+            name=data.get("name"),
+            description=data.get("description"),
+        )
+
+        return HttpResponse(
+            "created", status=201
+        )
