@@ -50,10 +50,3 @@ def create_user_profile(sender, instance, created, **kwargs):
        profile, created = UserProfile.objects.get_or_create(user=instance)  
 
 post_save.connect(create_user_profile, sender=User) 
-
-
-
-@receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def create_auth_token(sender, instance=None, created=False, **kwargs):
-    if created:
-        Token.objects.create(user=instance)
