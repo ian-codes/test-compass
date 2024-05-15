@@ -35,10 +35,11 @@ class UserAcceptanceTest(models.Model):
         return self.name
 
 class TestProcedure(models.Model):
-    acceptance_test = models.ForeignKey(UserAcceptanceTest, on_delete=models.CASCADE, verbose_name="Akzeptanztest", null=False, blank=False)
+    acceptance_tests = models.ManyToManyField(UserAcceptanceTest, null=True, blank=True)
     name = models.CharField(max_length=150, blank=False, null=False, verbose_name="Name")
     description = models.TextField(verbose_name="Beschreibung", blank=True, null=True, max_length=250)
     created_at = models.DateTimeField(default=timezone.now, verbose_name="Erstellt am")
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name="Projekt", null=True, blank=True)
 
 
     def __str__(self):
