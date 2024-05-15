@@ -9,14 +9,30 @@ from django.http import JsonResponse, HttpResponse, Http404
 from .models import UserAcceptanceTest, UserAcceptanceTestResult, TestProcedureResult, TestProcedure, User, Project
 from organizations.models import UserProfile, Organization
 
-
 class TestView(View):
     def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            tests = UserAcceptanceTest.objects.filter(creator=self.request.user)
-        else:
-            tests = None
+        token = Token.objects.get(key=request.COOKIES.get('auth_token'))
+        user=token.user
+        profile = UserProfile.objects.get(user=user)
+        if not profile.organization:
+            return HttpResponse(
+                "This user has no organization", status=400
+            )
+        project = None
+        try:    
+            project = Project.objects.get(pk=kwargs.get('pk'))        
 
+        except Project.DoesNotExist:
+          return HttpResponse(
+                "Project with pk does not exist", status=400
+            )        
+        
+        if not user in project.user_list.all():
+            return HttpResponse(
+                "Unauthorized", status=403
+            )        
+
+        tests = UserAcceptanceTest.objects.filter(project=project)
         test_list = list(tests.values())
 
         return JsonResponse(test_list, safe=False)
@@ -24,11 +40,29 @@ class TestView(View):
 
 class TestResultView(View):
     def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            test_results = UserAcceptanceTestResult.objects.filter(creator=self.request.user)
-        else:
-            test_results = None
 
+        token = Token.objects.get(key=request.COOKIES.get('auth_token'))
+        user=token.user
+        profile = UserProfile.objects.get(user=user)
+        if not profile.organization:
+            return HttpResponse(
+                "This user has no organization", status=400
+            )
+        project = None
+        try:    
+            project = Project.objects.get(pk=kwargs.get('pk'))        
+
+        except Project.DoesNotExist:
+          return HttpResponse(
+                "Project with pk does not exist", status=400
+            )        
+        
+        if not user in project.user_list.all():
+            return HttpResponse(
+                "Unauthorized", status=403
+            )
+        acceptance_test = UserAcceptanceTest.objects.get(pk=kwargs.get('pk'))      
+        test_results = UserAcceptanceTestResult.objects.filter(test)
         test_result_list = list(test_results.values())
 
         return JsonResponse(test_result_list, safe=False)
@@ -36,10 +70,27 @@ class TestResultView(View):
 
 class TestProcedureView(View):
     def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            test_procedures = TestProcedure.objects.filter(creator=self.request.user)
-        else:
-            test_procedures = None
+        token = Token.objects.get(key=request.COOKIES.get('auth_token'))
+        user=token.user
+        profile = UserProfile.objects.get(user=user)
+        if not profile.organization:
+            return HttpResponse(
+                "This user has no organization", status=400
+            )
+        project = None
+        try:    
+            project = Project.objects.get(pk=kwargs.get('pk'))        
+
+        except Project.DoesNotExist:
+          return HttpResponse(
+                "Project with pk does not exist", status=400
+            )        
+        
+        if not user in project.user_list.all():
+            return HttpResponse(
+                "Unauthorized", status=403
+            )
+        test_procedures = TestProcedure.objects.filter(project=project)
 
         test_procedure_list = list(test_procedures.values())
 
@@ -60,8 +111,14 @@ class TestProcedureResultView(View):
 
 class UserView(View):
     def get(self, request, *args, **kwargs):
-        user = self.request.user
+        token = Token.objects.get(key=request.COOKIES.get('auth_token'))
+        user=token.user
         profile = UserProfile.objects.get(user=user)
+        if not profile.organization:
+            return HttpResponse(
+                "This user has no organization", status=400
+            )
+        
         organization = profile.organization
         users = UserProfile.objects.filter(organization=organization)
 
@@ -71,7 +128,9 @@ class UserView(View):
             related_user = user_profile.user
             user_data = {
                 "id": user_profile.id,
-                "username": related_user.username,
+                "email": related_user.email,
+                "first_name":related_user.first_name,
+                "last_name":related_user.last_name,
                 "role": user_profile.role,
                 "organization_id": user_profile.organization_id
             }
@@ -88,20 +147,23 @@ class CreateProjectView(View):
 
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
-        token = Token.objects.get(key=request.headers.get("Authorization"))
-        if token.user is not None:
-            user = token.user
+        token = Token.objects.get(key=request.COOKIES.get('auth_token'))
+        profile = UserProfile.objects.get(user=token.user)
+        
+        if profile.organization != None:
+            organization = profile.organization
+    
         else:
-            return HttpResponse("invalid user", status=400)
-        profile = UserProfile.objects.get(user=user)
-        organization = profile.organization
-
+            return HttpResponse(
+                "This user has no organization", status=400
+            )
+        
         project = Project.objects.create(
-            organization=organization,
-            name=data.get("name"),
-            description=data.get("description"),
+                organization=organization,
+                name=data.get("name"),
+                description=data.get("description"),
         )
 
         return HttpResponse(
-            "created", status=201
+                "created", status=201
         )
