@@ -53,7 +53,7 @@ class TestProcedureResult(models.Model):
 
 
     def __str__(self):
-        return self.test_procedure
+        return self.test_procedure.name
 
 class UserAcceptanceTestResult(models.Model):
     test_procedure_result = models.ForeignKey(TestProcedureResult, on_delete=models.CASCADE, verbose_name="Testprozedurresultat", null=False, blank=False)
