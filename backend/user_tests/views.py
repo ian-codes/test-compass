@@ -9,28 +9,29 @@ from django.http import JsonResponse, HttpResponse, Http404
 from .models import UserAcceptanceTest, UserAcceptanceTestResult, TestProcedureResult, TestProcedure, User, Project
 from organizations.models import UserProfile, Organization
 
+
 class TestView(View):
     def get(self, request, *args, **kwargs):
         token = Token.objects.get(key=request.COOKIES.get('auth_token'))
-        user=token.user
+        user = token.user
         profile = UserProfile.objects.get(user=user)
         if not profile.organization:
             return HttpResponse(
                 "This user has no organization", status=400
             )
         project = None
-        try:    
-            project = Project.objects.get(pk=kwargs.get('pk'))        
+        try:
+            project = Project.objects.get(pk=kwargs.get('pk'))
 
         except Project.DoesNotExist:
-          return HttpResponse(
+            return HttpResponse(
                 "Project with pk does not exist", status=400
-            )        
-        
+            )
+
         if not user in project.user_list.all():
             return HttpResponse(
                 "Unauthorized", status=403
-            )        
+            )
 
         tests = UserAcceptanceTest.objects.filter(project=project)
         test_list = list(tests.values())
@@ -42,26 +43,26 @@ class TestResultView(View):
     def get(self, request, *args, **kwargs):
 
         token = Token.objects.get(key=request.COOKIES.get('auth_token'))
-        user=token.user
+        user = token.user
         profile = UserProfile.objects.get(user=user)
         if not profile.organization:
             return HttpResponse(
                 "This user has no organization", status=400
             )
         project = None
-        try:    
-            project = Project.objects.get(pk=kwargs.get('pk'))        
+        try:
+            project = Project.objects.get(pk=kwargs.get('pk'))
 
         except Project.DoesNotExist:
-          return HttpResponse(
+            return HttpResponse(
                 "Project with pk does not exist", status=400
-            )        
-        
+            )
+
         if not user in project.user_list.all():
             return HttpResponse(
                 "Unauthorized", status=403
             )
-        acceptance_test = UserAcceptanceTest.objects.get(pk=kwargs.get('pk'))      
+        acceptance_test = UserAcceptanceTest.objects.get(pk=kwargs.get('pk'))
         test_results = UserAcceptanceTestResult.objects.filter(test)
         test_result_list = list(test_results.values())
 
@@ -71,21 +72,21 @@ class TestResultView(View):
 class TestProcedureView(View):
     def get(self, request, *args, **kwargs):
         token = Token.objects.get(key=request.COOKIES.get('auth_token'))
-        user=token.user
+        user = token.user
         profile = UserProfile.objects.get(user=user)
         if not profile.organization:
             return HttpResponse(
                 "This user has no organization", status=400
             )
         project = None
-        try:    
-            project = Project.objects.get(pk=kwargs.get('pk'))        
+        try:
+            project = Project.objects.get(pk=kwargs.get('pk'))
 
         except Project.DoesNotExist:
-          return HttpResponse(
+            return HttpResponse(
                 "Project with pk does not exist", status=400
-            )        
-        
+            )
+
         if not user in project.user_list.all():
             return HttpResponse(
                 "Unauthorized", status=403
@@ -112,13 +113,13 @@ class TestProcedureResultView(View):
 class UserView(View):
     def get(self, request, *args, **kwargs):
         token = Token.objects.get(key=request.COOKIES.get('auth_token'))
-        user=token.user
+        user = token.user
         profile = UserProfile.objects.get(user=user)
         if not profile.organization:
             return HttpResponse(
                 "This user has no organization", status=400
             )
-        
+
         organization = profile.organization
         users = UserProfile.objects.filter(organization=organization)
 
@@ -129,8 +130,8 @@ class UserView(View):
             user_data = {
                 "id": user_profile.id,
                 "email": related_user.email,
-                "first_name":related_user.first_name,
-                "last_name":related_user.last_name,
+                "first_name": related_user.first_name,
+                "last_name": related_user.last_name,
                 "role": user_profile.role,
                 "organization_id": user_profile.organization_id
             }
@@ -138,6 +139,7 @@ class UserView(View):
             user_list.append(user_data)
 
         return JsonResponse(user_list, safe=False)
+
 
 class CreateProjectView(View):
 
@@ -149,21 +151,56 @@ class CreateProjectView(View):
         data = json.loads(request.body)
         token = Token.objects.get(key=request.COOKIES.get('auth_token'))
         profile = UserProfile.objects.get(user=token.user)
-        
+
         if profile.organization != None:
             organization = profile.organization
-    
+
         else:
             return HttpResponse(
                 "This user has no organization", status=400
             )
-        
+
         project = Project.objects.create(
-                organization=organization,
-                name=data.get("name"),
-                description=data.get("description"),
+            organization=organization,
+            name=data.get("name"),
+            description=data.get("description"),
         )
 
         return HttpResponse(
-                "created", status=201
+            "created", status=201
+        )
+
+
+class DeleteProjectView(View):
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        token = Token.objects.get(key=request.COOKIES.get('auth_token'))
+        user = token.user
+        profile = UserProfile.objects.get(user=user)
+        pk = kwargs.get('pk')
+        if not profile.organization:
+            return HttpResponse(
+                "This user has no organization", status=400
+            )
+        project = None
+        try:
+            project = Project.objects.get(pk=pk)
+
+        except Project.DoesNotExist:
+            return HttpResponse(
+                "Project with pk does not exist", status=400
+            )
+
+        if not user in project.user_list.all():
+            return HttpResponse(
+                "Unauthorized", status=403
+            )
+        project.delete()
+
+        return HttpResponse(
+            "deleted", status=200
         )
