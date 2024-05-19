@@ -297,6 +297,98 @@ class CreateProjectView(View):
                 "created", status=201
         )
 
+class CreateTestView(View):
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+
+        token = Token.objects.get(key=request.COOKIES.get('auth_token'))
+        user=token.user
+        profile = UserProfile.objects.get(user=user)
+        if not profile.organization:
+            return HttpResponse(
+                "This user has no organization", status=400
+            )
+        project = None
+        try:    
+            project = Project.objects.get(pk=kwargs.get('pk'))        
+
+        except Project.DoesNotExist:
+          return HttpResponse(
+                "Project with pk does not exist", status=400
+            )        
+        
+        if not user in project.user_list.all():
+            return HttpResponse(
+                "Unauthorized", status=403
+            )
+
+        
+        acceptance_test = UserAcceptanceTest.objects.create(
+                creator=token.user,
+                project=project,
+                name=data.get("name"),
+                description=data.get("description"),
+                pre_conditions=data.get("pre_conditions"),
+                steps=data.get("steps"),
+                expected_result=data.get("expected_result"),
+        )
+
+        return HttpResponse(
+                "created", status=201
+        )
+
+class CreateTestProcedureView(View):
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+
+        token = Token.objects.get(key=request.COOKIES.get('auth_token'))
+        user=token.user
+        profile = UserProfile.objects.get(user=user)
+        if not profile.organization:
+            return HttpResponse(
+                "This user has no organization", status=400
+            )
+        project = None
+        try:    
+            project = Project.objects.get(pk=kwargs.get('pk'))        
+
+        except Project.DoesNotExist:
+          return HttpResponse(
+                "Project with pk does not exist", status=400
+            )        
+        
+        if not user in project.user_list.all():
+            return HttpResponse(
+                "Unauthorized", status=403
+            )
+
+        test_procedure = TestProcedure(
+                project=project,
+                name=data.get("name"),
+                description=data.get("description"),
+        )
+
+        test_procedure.save()
+
+        for id in data.get("acceptance_tests"):
+            test = UserAcceptanceTest.objects.get(pk=id)
+            test_procedure.acceptance_tests.add(test)
+        
+        test_procedure.save()
+
+        return HttpResponse(
+                "created", status=201
+        )
 
 # Delete Views
 class DeleteProjectView(View):
