@@ -6,8 +6,8 @@ from django.http import HttpResponse
 import json
 from rest_framework.views import APIView
 from django.core.mail import EmailMultiAlternatives
-from .models import Organization, UserProfile, Roles, OrganizationInvite
-from rest_framework.authtoken.models import Token 
+from .models import Organization, UserProfile, Roles, OrganizationInvite, Token
+
 from .schemas import APP_SIGNUP_BODY_SCHEMA
 from django.contrib.auth.models import User
 from django.http import HttpResponse, JsonResponse, Http404, HttpResponseRedirect
@@ -61,6 +61,8 @@ class LoginView(APIView):
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
+        print(username)
+        print(password)
         response = Response()  
         user = authenticate(request, username=username, password=password)
         if user is not None:

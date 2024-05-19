@@ -1,8 +1,7 @@
 from django.http import JsonResponse
 from django.utils.deprecation import MiddlewareMixin
-import jwt  # assuming you're using JWT for tokens
 from django.conf import settings
-from rest_framework.authtoken.models import Token 
+from organizations.models import Token
 
 class TokenAuthenticationMiddleware(MiddlewareMixin):
     def process_request(self, request):

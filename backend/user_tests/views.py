@@ -1,6 +1,5 @@
 
 import json
-from rest_framework.authtoken.models import Token
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views import View
@@ -8,8 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import FormView, ListView, TemplateView, CreateView, DetailView
 from django.http import JsonResponse, HttpResponse, Http404
 from .models import UserAcceptanceTest, UserAcceptanceTestResult, TestProcedureResult, TestProcedure, User, Project
-from organizations.models import UserProfile, Organization
-
+from organizations.models import UserProfile, Organization, Token
 
 # List Views
 class TestView(View):
