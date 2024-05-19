@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path, re_path
-from .views import TestView, TestProcedureView, TestProcedureDetailView, TestProcedureResultListView, TestProcedureResultDetailView, UserView, CreateProjectView, DeleteProjectView, DeleteTestView, CreateTestView, CreateTestProcedureView
+from .views import TestView, TestProcedureView, TestProcedureDetailView, TestProcedureResultListView, TestProcedureResultDetailView, UserView, CreateProjectView, DeleteProjectView, DeleteTestView, CreateTestView, CreateTestProcedureView, CreateTestProcedureResultView
 
 app_name = 'user_tests'
 urlpatterns = [
@@ -31,7 +31,8 @@ urlpatterns = [
 
     path('projects/create/', CreateProjectView.as_view(), name='create_project_view'), # Done
     path('projects/<int:pk>/tests/create/', CreateTestView.as_view(), name='create_test_view'),# Done
-    path('projects/<int:pk>/testprocedures/create/', CreateTestProcedureView.as_view(), name='create_test_view'), # Done
+    path('projects/<int:pk>/testprocedures/create/', CreateTestProcedureView.as_view(), name='create_test_procedure_view'), # Done
+    path('projects/<int:pk>/testprocedures/<int:procedure_id>/create/', CreateTestProcedureResultView.as_view(), name='create_test_procedure_result_view'), # Done
 
 
     path('projects/<int:pk>/delete', DeleteProjectView.as_view(), name='delete_project_view'), # Done

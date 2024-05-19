@@ -390,6 +390,54 @@ class CreateTestProcedureView(View):
                 "created", status=201
         )
 
+class CreateTestProcedureResultView(View):
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+
+        token = Token.objects.get(key=request.COOKIES.get('auth_token'))
+        user=token.user
+        profile = UserProfile.objects.get(user=user)
+        if not profile.organization:
+            return HttpResponse(
+                "This user has no organization", status=400
+            )
+        project = None
+        try:    
+            project = Project.objects.get(pk=kwargs.get('pk'))        
+
+        except Project.DoesNotExist:
+          return HttpResponse(
+                "Project with pk does not exist", status=400
+            )        
+        
+        if not user in project.user_list.all():
+            return HttpResponse(
+                "Unauthorized", status=403
+            )
+        
+        procedure = TestProcedure.objects.get(pk=kwargs.get('procedure_id'))
+        test_procedure_result = TestProcedureResult.objects.create(test_procedure=procedure, creator=token.user)
+        test_procedure_result.save()
+
+        for test in data.get("tests", []):
+            acceptance_test = UserAcceptanceTest.objects.get(pk=test.get("id"))
+            if acceptance_test in procedure.acceptance_tests.all():
+                test_result = UserAcceptanceTestResult.objects.create(
+                    test_procedure_result=test_procedure_result,
+                    acceptance_test=acceptance_test,
+                    status = test.get("status"),
+                    notes = test.get("notes"),
+                )
+                
+        return HttpResponse(
+                "created", status=201
+        )
+
 # Delete Views
 class DeleteProjectView(View):
 
