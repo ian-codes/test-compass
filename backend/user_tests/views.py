@@ -10,6 +10,8 @@ from django.http import JsonResponse, HttpResponse, Http404
 from .models import UserAcceptanceTest, UserAcceptanceTestResult, TestProcedureResult, TestProcedure, User, Project
 from organizations.models import UserProfile, Organization
 
+
+# List Views
 class TestView(View):
     def get(self, request, *args, **kwargs):
         token = Token.objects.get(key=request.COOKIES.get('auth_token'))
@@ -37,34 +39,6 @@ class TestView(View):
         test_list = list(tests.values())
 
         return JsonResponse(test_list, safe=False)
-
-class TestProcedureResultListView(View):
-    def get(self, request, *args, **kwargs):
-
-        token = Token.objects.get(key=request.COOKIES.get('auth_token'))
-        user=token.user
-        profile = UserProfile.objects.get(user=user)
-        if not profile.organization:
-            return HttpResponse(
-                "This user has no organization", status=400
-            )
-        project = None
-        try:    
-            project = Project.objects.get(pk=kwargs.get('pk'))        
-
-        except Project.DoesNotExist:
-          return HttpResponse(
-                "Project with pk does not exist", status=400
-            )        
-        
-        if not user in project.user_list.all():
-            return HttpResponse(
-                "Unauthorized", status=403
-            )
-        test_procedure_results = TestProcedureResult.objects.filter(test_procedure__project=project)
-        test_procedure_result_list = list(test_procedure_results.values())
-
-        return JsonResponse(test_procedure_result_list, safe=False)
 
 
 class TestProcedureDetailView(View):
@@ -129,6 +103,47 @@ class TestProcedureDetailView(View):
         return JsonResponse(test_procedure_json, safe=False)
 
 
+class TestProcedureResultListView(View):
+    def get(self, request, *args, **kwargs):
+
+        token = Token.objects.get(key=request.COOKIES.get('auth_token'))
+        user=token.user
+        profile = UserProfile.objects.get(user=user)
+        if not profile.organization:
+            return HttpResponse(
+                "This user has no organization", status=400
+            )
+        project = None
+        try:    
+            project = Project.objects.get(pk=kwargs.get('pk'))        
+
+        except Project.DoesNotExist:
+          return HttpResponse(
+                "Project with pk does not exist", status=400
+            )        
+        
+        if not user in project.user_list.all():
+            return HttpResponse(
+                "Unauthorized", status=403
+            )
+        test_procedure_results = TestProcedureResult.objects.filter(test_procedure__project=project)
+
+        test_procedure_result_list = []
+        for result in test_procedure_results:
+            result_data = {
+                'id': result.id,
+                'creator': {
+                    "username":result.creator.username,
+                    "first_name":result.creator.first_name,
+                    "last_name":result.creator.last_name,
+                },
+                'created_at': result.created_at,
+                'test_procedure': result.test_procedure.id
+            }
+            test_procedure_result_list.append(result_data)
+
+        return JsonResponse(test_procedure_result_list, safe=False)
+    
 class TestProcedureResultDetailView(View):
     def get(self, request, *args, **kwargs):
 
@@ -154,14 +169,41 @@ class TestProcedureResultDetailView(View):
             )
 
         try:
-            test_procedure_results = TestProcedureResult.objects.get(test_procedure__project=project, pk=kwargs.get('procedure_id'))
+            test_procedure_result = TestProcedureResult.objects.get(test_procedure__project=project, pk=kwargs.get('result_id'))
         except TestProcedureResult.DoesNotExist:
             return HttpResponse(
-                "No procedure results found", status=400
+                "No procedure result found", status=400
             )
-        test_procedure_result_list = list(test_procedure_results.values())
+        
+        acceptance_test_result_list = []
+        for acceptance_test_result in test_procedure_result.useracceptancetestresult_set.all():
+            acceptance_test = {
+                'created_at': acceptance_test_result.created_at,
+                'status': acceptance_test_result.status,
+                'notes': acceptance_test_result.notes,
+                'acceptance_test': {
+                    'test_name':  acceptance_test_result.acceptance_test.name,
+                    'test_description':  acceptance_test_result.acceptance_test.description,
+                    'test_pre_conditions':  acceptance_test_result.acceptance_test.pre_conditions,
+                    'test_expected_result':  acceptance_test_result.acceptance_test.expected_result,
+                    'test_expected_steps':  acceptance_test_result.acceptance_test.steps,
+                }  
 
-        return JsonResponse(test_procedure_result_list, safe=False)
+            }
+            acceptance_test_result_list.append(acceptance_test)
+            
+        test_procedure_json = {
+            'created_at': test_procedure_result.created_at,
+            'creator': {
+                    "username":test_procedure_result.creator.username,
+                    "first_name":test_procedure_result.creator.first_name,
+                    "last_name":test_procedure_result.creator.last_name,
+            },
+            'acceptance_test_results':acceptance_test_result_list
+
+        }
+
+        return JsonResponse(test_procedure_json, safe=False)
 
 
 
@@ -225,6 +267,7 @@ class UserView(View):
 
         return JsonResponse(user_list, safe=False)
 
+# Create Views
 class CreateProjectView(View):
 
     @method_decorator(csrf_exempt)
@@ -254,6 +297,8 @@ class CreateProjectView(View):
                 "created", status=201
         )
 
+
+# Delete Views
 class DeleteProjectView(View):
 
     @method_decorator(csrf_exempt)

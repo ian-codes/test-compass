@@ -3,6 +3,12 @@ from organizations.models import Organization
 from django.utils import timezone
 from django.contrib.auth.models import User
 
+class TestStatus(models.TextChoices):
+    SUCCESS = 'SUCCESS', 'Success'
+    FAILED = 'FAILED', "Failed"
+    PENDING = 'PENDING', "Pending"
+
+
 class Project(models.Model):
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, verbose_name="Organisation", null=False, blank=False)
     name = models.CharField(max_length=150, blank=False, null=False, verbose_name="Name")
@@ -60,6 +66,10 @@ class UserAcceptanceTestResult(models.Model):
 
     created_at = models.DateTimeField(default=timezone.now, verbose_name="Erstellt am")
     acceptance_test = models.ForeignKey(UserAcceptanceTest, on_delete=models.CASCADE, verbose_name="Akzeptanztest", null=False, blank=False)
+    status = models.CharField(max_length=10, verbose_name="Test-Status",
+                              choices=TestStatus.choices, default=TestStatus.PENDING)
+
+    notes = models.TextField(verbose_name="Notizen", blank=True, null=True, max_length=300)
 
 
     def __str__(self):
