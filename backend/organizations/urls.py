@@ -22,7 +22,7 @@ from .views import SignupView, UserInviteView, OrgInvitationView, LoginView, som
 app_name = 'organizations'
 urlpatterns = [
     path('auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('login/',LoginView.as_view(),name = "login"),
+    path('account/login/',LoginView.as_view(),name = "login"),
     path('obj/',some_protected_view, name = "helo"),
     path('account/register/', SignupView.as_view()),
     path('organization/invite/', UserInviteView.as_view()),
