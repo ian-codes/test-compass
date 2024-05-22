@@ -16,10 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path, re_path
-from .views import TestView, TestProcedureView, TestProcedureDetailView, TestProcedureResultListView, TestProcedureResultDetailView, UserView, CreateProjectView, DeleteProjectView, DeleteTestView, CreateTestView, CreateTestProcedureView, CreateTestProcedureResultView
+from .views import TestView, TestProcedureView, TestProcedureDetailView, TestProcedureResultListView, TestProcedureResultDetailView, UserView, CreateProjectView, DeleteProjectView, DeleteTestView, CreateTestView, CreateTestProcedureView, CreateTestProcedureResultView, ProjectsView
 
 app_name = 'user_tests'
 urlpatterns = [
+    path('projects/', ProjectsView.as_view(), name='user_view'), # Done
+
     path('users/', UserView.as_view(), name='user_view'), # Done
     path('projects/<int:pk>/tests/', TestView.as_view(), name='test_view'), # Done
 
