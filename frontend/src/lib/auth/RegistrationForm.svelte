@@ -1,96 +1,11 @@
-<script>
-    $: first_name = ["", null]
-    $: last_name = ["", null]
-    $: email = ["", null]
-    $: password = ["", null]
-    $: isOrganizationManager = false
-    $: organization_name = ["", null]
-
-    let registrationFailed = false
-
-    async function handleSubmit() {
-        if (!validateInputs())
-            return
-
-        await makeRegisterPostRequest()
-
-        resetInputValues()
-    }
-
-    function generatePayload() {
-        return {
-            email: email[0],
-            password: password[0],
-            first_name: first_name[0],
-            last_name: last_name[0],
-            organization_name: organization_name[0]
-        }
-    }
-
-    function resetInputValues() {
-        first_name = ["", null]
-        last_name = ["", null]
-        email = ["", null]
-        password = ["", null]
-        isOrganizationManager = false
-        organization_name = ["", null]
-    }
-
-    async function makeRegisterPostRequest() {
-        let payload = generatePayload()
-
-        try {
-            const response = await fetch("apiURL", {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(payload)
-            })
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const data = await response.json()
-            return data.token
-        }
-        catch {
-
-        }
-    }
-
-
-    function handleStatusChange() {
-        isOrganizationManager = !isOrganizationManager
-    }
-
-
-    function validateInputs() {
-        first_name[1] = first_name[0] != "" && first_name[0]
-        last_name[1] = last_name[0] != "" && last_name[0]
-        email[1] = email[0] != "" && email[0]
-        password[1] = password[0] != "" && password[0]
-
-        if (isOrganizationManager) {
-            organization_name[1] = organization_name[0] != "" && organization_name[0]
-            return first_name[1] && last_name[1] && email[1] && password[1] && organization_name[1]
-        }
-
-        return first_name[1] && last_name[1] && email[1] && password[1]
-    }
-</script>
-
-
-
-<section class="dark:bg-slate-600 flex flex-col items-center gap-5 
-    py-12 bg-slate-300">
+<section class="dark:bg-slate-800 flex flex-col items-center gap-5 
+    py-12 bg-slate-100">
 
     <h2 class="text-center text-xl font-mono font-extralight">
         Register
     </h2>
 
-    <form on:submit={handleSubmit}
+    <form on:submit|preventDefault={handleSubmit}
         class="flex gap-2 flex-col items-center justify-center">
 
         <div 
@@ -178,11 +93,95 @@
             <p>Failed to register.</p>
         {/if}
 
-        <button on:submit={handleSubmit} 
-            class="btn">
+        <button type="submit" class="btn">
             Register
         </button>
     </form>
 
     <a href="/login" class="text-sm underline">Already registered? Log in here.</a>
 </section>
+
+
+<script>
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
+    $: first_name = ["", null]
+    $: last_name = ["", null]
+    $: email = ["", null]
+    $: password = ["", null]
+    $: isOrganizationManager = false
+    $: organization_name = ["", null]
+
+    let registrationFailed = false
+
+    async function handleSubmit() {
+        if (!validateInputs())
+            return
+
+        let token = await makeRegisterPostRequest()
+
+        resetInputValues()
+    }
+
+    function generatePayload() {
+        return {
+            email: email[0],
+            password: password[0],
+            first_name: first_name[0],
+            last_name: last_name[0],
+            organization_name: organization_name[0]
+        }
+    }
+
+    function resetInputValues() {
+        first_name = ["", null]
+        last_name = ["", null]
+        email = ["", null]
+        password = ["", null]
+        isOrganizationManager = false
+        organization_name = ["", null]
+    }
+
+    async function makeRegisterPostRequest() {
+        let payload = generatePayload()
+        console.log(payload)
+
+        try {
+            const response = await fetch(BACKEND_URL, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            })
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json()
+            return data.token
+        }
+        catch {
+            return null;
+        }
+    }
+
+    function handleStatusChange() {
+        isOrganizationManager = !isOrganizationManager
+    }
+
+    function validateInputs() {
+        first_name[1] = first_name[0] != "" && first_name[0]
+        last_name[1] = last_name[0] != "" && last_name[0]
+        email[1] = email[0] != "" && email[0]
+        password[1] = password[0] != "" && password[0]
+
+        if (isOrganizationManager) {
+            organization_name[1] = organization_name[0] != "" && organization_name[0]
+            return first_name[1] && last_name[1] && email[1] && password[1] && organization_name[1]
+        }
+
+        return first_name[1] && last_name[1] && email[1] && password[1]
+    }
+</script>

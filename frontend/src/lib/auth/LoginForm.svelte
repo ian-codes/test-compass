@@ -1,59 +1,3 @@
-<script>
-    $: email = ["", null]
-    $: password = ["", null]
-
-    let loginFailed = false
-
-    async function handleSubmit() {
-        if (!validateInputs()) {
-            return
-        }
-
-        let token = await makeLoginPostRequest()
-
-        if (token == null) {
-            loginFailed = true
-        }
-
-        resetInputValues()
-    }
-
-    function validateInputs() {
-        email[1] = email[0] != "" && email[0]
-        password[1] = password[0] != "" && password[0]
-        return email[1] && password[1]
-    }
-
-    function resetInputValues() {
-        email = ["", null]
-        password = ["", null]
-    }
-    
-    async function makeLoginPostRequest() {
-        try {
-            const response = await fetch("apiURL", {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ username: email[0], password: password[0] })
-            })
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const data = await response.json()
-            return data.token
-        }
-        catch {
-            return null
-        }
-    }
-</script>
-
-
-
 <section class="dark:bg-slate-600  flex flex-col items-center gap-5 
     py-12 bg-slate-300">
 
@@ -104,3 +48,62 @@
 
     <a href="/register" class="text-sm underline">Don't have an account? Register here.</a>
 </section>
+
+
+<script>
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
+    $: email = ["", null]
+    $: password = ["", null]
+
+    let loginFailed = false
+
+    async function handleSubmit() {
+        let token;
+        if (!validateInputs()) {
+            return
+        }
+        try {
+            token = await makeLoginPostRequest()
+        } catch {
+            loginFailed = true
+        }
+        if (token == null) {
+            loginFailed = true
+        }
+        resetInputValues()
+    }
+
+    function validateInputs() {
+        email[1] = email[0] != "" && email[0]
+        password[1] = password[0] != "" && password[0]
+        return email[1] && password[1]
+    }
+
+    function resetInputValues() {
+        email = ["", null]
+        password = ["", null]
+    }
+
+    async function makeLoginPostRequest() {
+        try {
+            const response = await fetch(BACKEND_URL, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ username: email[0], password: password[0] })
+            })
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json()
+            return data.token
+        }
+        catch {
+            return null
+        }
+    }
+</script>
