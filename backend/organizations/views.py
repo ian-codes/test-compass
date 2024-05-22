@@ -4,9 +4,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views import View
 from django.http import HttpResponse
 import json
+from rest_framework.views import APIView
+from django.core.mail import EmailMultiAlternatives
+from .models import Organization, UserProfile, Roles, OrganizationInvite, Token
 
-from .models import Organization, UserProfile, Roles, OrganizationInvite
-from rest_framework.authtoken.models import Token 
 from .schemas import APP_SIGNUP_BODY_SCHEMA
 from django.contrib.auth.models import User
 from django.http import HttpResponse, JsonResponse, Http404, HttpResponseRedirect
@@ -19,11 +20,74 @@ import jsonschema
 from django.contrib.auth.password_validation import validate_password
 from jsonschema import ValidationError as SchemaValidationError
 from datetime import datetime
-class SignupView(View):
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
+import datetime
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.middleware import csrf
+from django.contrib.auth import authenticate
+from testcompass_backend import settings
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
+def get_tokens_for_user(user):
+    refresh = RefreshToken.for_user(user)
+    return {
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+    }
 
+class ObjectView(APIView):
+
+    def get(self, request):
+        print(request.get)
+    
+class RestrictedView(APIView):
+    def get(self, request):
+        return Response(data={"message": "This is a restricted area, welcome!"})
+
+def some_protected_view(request):
+    token = request.COOKIES.get('auth_token')
+    if token:
+        print(token)
+        try: 
+            Token.objects.get(key=token)
+            return HttpResponse("Access to protected data")
+        except:
+            return HttpResponse("Invalid or expired token", status=401)
+
+        
+class LoginView(APIView):
+    permission_classes = ()  # Allows unauthenticated access
+
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        print(username)
+        print(password)
+        response = Response()  
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+
+            token=None
+            try:
+                token = Token.objects.get(user=user)
+                
+                token.delete()
+            except Token.DoesNotExist:
+
+                pass
+            refresh = RefreshToken.for_user(user)
+            access_token = refresh.access_token
+            token = Token.objects.create(user=user, key=str(access_token))
+            response.set_cookie('auth_token', str(access_token), httponly=True, expires=datetime.timedelta(days=30))
+            csrf.get_token(request)
+            response.data = {
+                'login successful'
+            }
+            return response
+        return Response({'error': 'Invalid Credentials'}, status=401)
+    
+class SignupView(APIView):
+    permission_classes = () 
     def post(self, request, *args, **kwargs):
         # Validate json through schema  
         try:
@@ -61,13 +125,18 @@ class SignupView(View):
                 first_name=form_data.get("first_name"),
                 last_name=form_data.get("last_name"),
                 email=form_data.get("email"),
-                username=username,
+                username=form_data.get("email"),
 
         )
         new_user.set_password(form_data.get("password"))
         new_user.save()
-        token = Token.objects.get(user=new_user)
 
+        refresh = RefreshToken.for_user(new_user)
+        access_token = refresh.access_token
+        response = Response() 
+        token = Token.objects.create(user=new_user, key=str(access_token))
+        response.set_cookie('auth_token', str(access_token), httponly=True, expires=datetime.timedelta(days=30))
+        csrf.get_token(request)
         if(form_data.get("organization_name")):
             organization = Organization.objects.create(name=form_data.get("organization_name"))
             profile = UserProfile.objects.get(user=new_user)
@@ -75,8 +144,11 @@ class SignupView(View):
             profile.role = Roles.ORGANIZATION_LEADER
             profile.save()
 
+        response.data = {
+                'signup successful'
+        }
         
-        return JsonResponse({"token": token.key}, status=201)
+        return response
 
 
 class UserInviteView(View):

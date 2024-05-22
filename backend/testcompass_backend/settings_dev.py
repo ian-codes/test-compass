@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-
+from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-ckzpct$$!b=t_)ifr50c1$ksaj7^6y$0u^7-orgf3(-@46)@py
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -40,7 +40,30 @@ INSTALLED_APPS = [
     'user_tests',
     'organizations',
     "rest_framework",
-    "rest_framework.authtoken"
+    'corsheaders',
+]
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
 ]
 
 MIDDLEWARE = [
@@ -48,9 +71,11 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'user_tests.middleware.TokenAuthenticationMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'testcompass_backend.middleware.MyCustomMiddleware',
 ]
 
 ROOT_URLCONF = 'testcompass_backend.urls'
@@ -108,7 +133,6 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
@@ -123,6 +147,24 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = "noreply.testcompass@gmail.com"
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'testcompass_backend.authentication.CustomAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
+
+SIMPLE_JWT = {
+'AUTH_COOKIE': 'access_token',  # Cookie name. Enables cookies if value is set.
+'AUTH_COOKIE_DOMAIN': None,     # A string like "example.com", or None for standard domain cookie.
+'AUTH_COOKIE_SECURE': False,    # Whether the auth cookies should be secure (https:// only).
+'AUTH_COOKIE_HTTP_ONLY' : True, # Http only cookie flag.It's not fetch by javascript.
+'AUTH_COOKIE_PATH': '/',        # The path of the auth cookie.
+'AUTH_COOKIE_SAMESITE': 'Lax',  # Whether to set the flag restricting cookie leaks on cross-site requests.
+'ACCESS_TOKEN_LIFETIME':timedelta(days=30),
+}
 
 TEMPLATES = [
     {
