@@ -4,7 +4,7 @@
 </script>
 
 
-<div class="min-h-dvh overflow-x-hidden relative">
+<div class="bg-slate-100 dark:bg-slate-800 min-h-dvh overflow-x-hidden relative">
     <div class="inset-0 absolute hidden
     bg-gradient-to-r from-slate-500 via-transparent to-slate-500" />
 

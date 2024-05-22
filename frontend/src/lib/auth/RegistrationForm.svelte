@@ -104,6 +104,7 @@
 
 <script>
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+    const register_url = `${BACKEND_URL}account/register/`
 
     $: first_name = ["", null]
     $: last_name = ["", null]
@@ -115,11 +116,10 @@
     let registrationFailed = false
 
     async function handleSubmit() {
-        if (!validateInputs())
+        if (!validateInputs()) {
             return
-
-        let token = await makeRegisterPostRequest()
-
+        }
+        await makeRegisterPostRequest()
         resetInputValues()
     }
 
@@ -147,23 +147,21 @@
         console.log(payload)
 
         try {
-            const response = await fetch(BACKEND_URL, {
+            const response = await fetch(register_url, {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(payload)
             })
-
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-
-            const data = await response.json()
-            return data.token
+            return true
         }
         catch {
-            return null;
+            registrationFailed = true
+            return false
         }
     }
 
@@ -181,7 +179,6 @@
             organization_name[1] = organization_name[0] != "" && organization_name[0]
             return first_name[1] && last_name[1] && email[1] && password[1] && organization_name[1]
         }
-
         return first_name[1] && last_name[1] && email[1] && password[1]
     }
 </script>

@@ -1,5 +1,5 @@
-<section class="dark:bg-slate-600  flex flex-col items-center gap-5 
-    py-12 bg-slate-300">
+<section class="dark:bg-slate-800  flex flex-col items-center gap-5 
+    py-12 bg-slate-100">
 
     <h2 class="text-center text-xl font-mono font-extralight">
         Log In
@@ -51,7 +51,10 @@
 
 
 <script>
+    import { goto } from "$app/navigation"
+
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+    const login_url = `${BACKEND_URL}account/login/`
 
     $: email = ["", null]
     $: password = ["", null]
@@ -59,19 +62,14 @@
     let loginFailed = false
 
     async function handleSubmit() {
-        let token;
         if (!validateInputs()) {
             return
         }
-        try {
-            token = await makeLoginPostRequest()
-        } catch {
-            loginFailed = true
-        }
-        if (token == null) {
-            loginFailed = true
-        }
+        let success = await makeLoginPostRequest()
         resetInputValues()
+        if (success) {
+            goto("/")
+        }
     }
 
     function validateInputs() {
@@ -87,23 +85,21 @@
 
     async function makeLoginPostRequest() {
         try {
-            const response = await fetch(BACKEND_URL, {
+            const response = await fetch(login_url, {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({ username: email[0], password: password[0] })
             })
-
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-
-            const data = await response.json()
-            return data.token
+            return true
         }
         catch {
-            return null
+            loginFailed = true
+            return false
         }
     }
 </script>
