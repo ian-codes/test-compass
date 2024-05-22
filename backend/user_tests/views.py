@@ -291,6 +291,15 @@ class CreateProjectView(View):
                 description=data.get("description"),
         )
 
+        for id in data.get("users"):
+            try:
+                user = User.objects.get(pk=id)
+                project.user_list.add(user)
+            except User.DoesNotExist:
+                return HttpResponse(
+                "User doesn't exist", status=400
+                )
+
         return HttpResponse(
                 "created", status=201
         )
@@ -379,8 +388,14 @@ class CreateTestProcedureView(View):
         test_procedure.save()
 
         for id in data.get("acceptance_tests"):
-            test = UserAcceptanceTest.objects.get(pk=id)
-            test_procedure.acceptance_tests.add(test)
+            try:
+                test = UserAcceptanceTest.objects.get(pk=id)
+                test_procedure.acceptance_tests.add(test)
+            except UserAcceptanceTest.DoesNotExist:
+                return HttpResponse(
+                "UserAcceptanceTest doesn't exist", status=400
+            )
+
         
         test_procedure.save()
 
