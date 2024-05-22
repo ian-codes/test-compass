@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+h2 {
+    @apply mb-4 text-xl font-extralight uppercase tracking-widest
+}
+section {
+    @apply shadow-lg px-4 py-10 rounded-md outline-slate-300 outline-1 outline
+}
+input {
+    @apply p-2 rounded-md
+}
+.input-container {
+    @apply flex flex-col gap-1  p-2
+}
+.invalid {
+    @apply outline outline-red-400 outline-2
+}
+.btn {
+    @apply dark:text-black hover:bg-white hover:scale-105 hover:shadow-primary  hover:outline-primary hover:outline transition-all
+     bg-primary shadow-lg mt-5 px-4 py-2 rounded-lg w-full
+}
+.btn-secondary {
+    @apply dark:text-black outline-white outline outline-1 mt-5 px-4 py-2 rounded-lg w-full
+}
+.icon {
+    @apply bg-center bg-no-repeat bg-contain
+}
