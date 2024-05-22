@@ -438,13 +438,18 @@ class CreateTestProcedureResultView(View):
         test_procedure_result.save()
 
         for test in data.get("tests", []):
-            acceptance_test = UserAcceptanceTest.objects.get(pk=test.get("id"))
-            if acceptance_test in procedure.acceptance_tests.all():
-                test_result = UserAcceptanceTestResult.objects.create(
-                    test_procedure_result=test_procedure_result,
-                    acceptance_test=acceptance_test,
-                    status = test.get("status"),
-                    notes = test.get("notes"),
+            try:
+                acceptance_test = UserAcceptanceTest.objects.get(pk=test.get("id"), project=project)
+                if acceptance_test in procedure.acceptance_tests.all():
+                    test_result = UserAcceptanceTestResult.objects.create(
+                        test_procedure_result=test_procedure_result,
+                        acceptance_test=acceptance_test,
+                        status = test.get("status"),
+                        notes = test.get("notes"),
+                    )
+            except UserAcceptanceTest.DoesNotExist:
+                return HttpResponse(
+                    f"UserAcceptanceTest with id {test.get("id")} is not in this procedure", status=400
                 )
                 
         return HttpResponse(
