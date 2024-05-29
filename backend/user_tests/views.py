@@ -235,6 +235,21 @@ class TestProcedureView(View):
         return JsonResponse(test_procedure_list, safe=False)
 
 
+class ProjectsView(View):
+    def get(self, request, *args, **kwargs):
+        token = Token.objects.get(key=request.COOKIES.get('auth_token'))
+        user=token.user
+        profile = UserProfile.objects.get(user=user)
+        if not profile.organization:
+            return HttpResponse(
+                "This user has no organization", status=400
+            )
+        
+        organization = profile.organization
+        projects = Project.objects.filter(organization=organization)
+        return JsonResponse(list(projects.values_list()), safe=False)
+
+
 class UserView(View):
     def get(self, request, *args, **kwargs):
         token = Token.objects.get(key=request.COOKIES.get('auth_token'))
