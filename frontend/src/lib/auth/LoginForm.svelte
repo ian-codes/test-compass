@@ -51,7 +51,9 @@
 
 
 <script>
+    import { goto } from "$app/navigation.js";
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+    const LOGIN_URL = `${BACKEND_URL}account/login/`;
 
     $: email = ["", null]
     $: password = ["", null]
@@ -59,19 +61,21 @@
     let loginFailed = false
 
     async function handleSubmit() {
-        let token;
         if (!validateInputs()) {
             return
         }
         try {
-            token = await makeLoginPostRequest()
+            let response = await makeLoginPostRequest();
+            if (response.ok) {
+                loginFailed = false;
+                goto("/");
+            } else {
+                loginFailed = true;
+            }
         } catch {
-            loginFailed = true
+            loginFailed = true;
         }
-        if (token == null) {
-            loginFailed = true
-        }
-        resetInputValues()
+        resetInputValues();
     }
 
     function validateInputs() {
@@ -86,24 +90,13 @@
     }
 
     async function makeLoginPostRequest() {
-        try {
-            const response = await fetch(BACKEND_URL, {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ username: email[0], password: password[0] })
-            })
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const data = await response.json()
-            return data.token
-        }
-        catch {
-            return null
-        }
+        return await fetch(LOGIN_URL, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ username: email[0], password: password[0] }),
+            credentials: 'include'
+        })
     }
 </script>

@@ -104,6 +104,7 @@
 
 <script>
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+    const REGISTER_URL = `${BACKEND_URL}account/register/`;
 
     $: first_name = ["", null]
     $: last_name = ["", null]
@@ -147,12 +148,13 @@
         console.log(payload)
 
         try {
-            const response = await fetch(BACKEND_URL, {
+            const response = await fetch(REGISTER_URL, {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(payload),
+                credentials: 'include'
             })
 
             if (!response.ok) {

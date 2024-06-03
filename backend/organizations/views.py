@@ -78,7 +78,17 @@ class LoginView(APIView):
             refresh = RefreshToken.for_user(user)
             access_token = refresh.access_token
             token = Token.objects.create(user=user, key=str(access_token))
-            response.set_cookie('auth_token', str(access_token), httponly=True, expires=datetime.timedelta(days=30))
+            # response.set_cookie('auth_token', str(access_token), httponly=True, expires=datetime.timedelta(days=30))
+
+            response.set_cookie(
+                key='auth_token',
+                value=str(access_token),
+                httponly=True,
+                expires=datetime.timedelta(days=30),
+                secure=True,
+                samesite='None'
+            )
+
             csrf.get_token(request)
             response.data = {
                 'login successful'
@@ -158,7 +168,7 @@ class UserInviteView(View):
 
     def post(self, request, *args, **kwargs):
         form_data = json.loads(request.body)
-        token = Token.objects.get(key=request.headers.get("Authorization"))
+        token = Token.objects.get(key=request.COOKIES.get('auth_token'))
         try:
             requesting_user = token.user
         except User.DoesNotExist:

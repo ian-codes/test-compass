@@ -247,7 +247,7 @@ class ProjectsView(View):
         
         organization = profile.organization
         projects = Project.objects.filter(organization=organization)
-        return JsonResponse(list(projects.values_list()), safe=False)
+        return JsonResponse(list(projects.values()), safe=False)
 
 
 class UserView(View):
@@ -306,14 +306,14 @@ class CreateProjectView(View):
                 description=data.get("description"),
         )
 
-        for id in data.get("users"):
-            try:
-                user = User.objects.get(pk=id)
-                project.user_list.add(user)
-            except User.DoesNotExist:
-                return HttpResponse(
-                "User doesn't exist", status=400
-                )
+        # for id in data.get("users"):
+        #     try:
+        #         user = User.objects.get(pk=id)
+        #         project.user_list.add(user)
+        #     except User.DoesNotExist:
+        #         return HttpResponse(
+        #         "User doesn't exist", status=400
+        #         )
 
         return HttpResponse(
                 "created", status=201
@@ -464,7 +464,7 @@ class CreateTestProcedureResultView(View):
                     )
             except UserAcceptanceTest.DoesNotExist:
                 return HttpResponse(
-                    f"UserAcceptanceTest with id {test.get("id")} is not in this procedure", status=400
+                    # f"UserAcceptanceTest with id  is not in this procedure", status=400
                 )
                 
         return HttpResponse(
