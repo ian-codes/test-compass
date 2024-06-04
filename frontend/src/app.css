@@ -8,18 +8,19 @@ h2 {
 section {
     @apply shadow-lg px-4 py-10 rounded-md outline-slate-300 outline-1 outline
 }
-input {
+input, textarea {
     @apply p-2 rounded-md
 }
 .input-container {
-    @apply flex flex-col gap-1  p-2
+    @apply flex flex-col gap-1  p-2 w-full
 }
 .invalid {
     @apply outline outline-red-400 outline-2
 }
 .btn {
-    @apply dark:text-black hover:bg-white hover:scale-105 hover:shadow-primary  hover:outline-primary hover:outline transition-all
-     bg-primary shadow-lg mt-5 px-4 py-2 rounded-lg w-full
+    @apply dark:text-black hover:text-black hover:bg-white hover:scale-105
+     hover:outline-primary hover:outline transition-all
+     bg-primary mt-5 px-4 py-2 rounded-lg w-full
 }
 .btn-secondary {
     @apply dark:text-black outline-white outline outline-1 mt-5 px-4 py-2 rounded-lg w-full

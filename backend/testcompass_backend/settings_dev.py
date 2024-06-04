@@ -43,8 +43,6 @@ INSTALLED_APPS = [
     'corsheaders',
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
-
 CORS_ALLOW_METHODS = [
     "DELETE",
     "GET",
@@ -64,6 +62,13 @@ CORS_ALLOW_HEADERS = [
     "user-agent",
     "x-csrftoken",
     "x-requested-with",
+    'Access-Control-Allow-Origin'
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173'
 ]
 
 MIDDLEWARE = [

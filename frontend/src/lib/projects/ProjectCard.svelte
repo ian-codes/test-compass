@@ -12,21 +12,7 @@
     </h3>
 
     <div class="details-wrapper">
-        <span>
-            UATs
-        </span>
-        <span>
-            {project.uats}
-        </span>
-    </div>
-
-    <div class="details-wrapper">
-        <span>
-            Failed
-        </span>
-        <span>
-            {project.invalid}
-        </span>
+        {project.description}
     </div>
 
 
