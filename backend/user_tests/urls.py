@@ -16,14 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path, re_path
-from .views import TestView, TestProcedureView, TestProcedureDetailView, TestProcedureResultListView, TestProcedureResultDetailView, UserView, CreateProjectView, DeleteProjectView, DeleteTestView, CreateTestView, CreateTestProcedureView, CreateTestProcedureResultView, ProjectsView, DeleteTestProcedureView, DeleteTestProcedureResultsView
+from .views import TestView, TestProcedureView, TestProcedureDetailView, TestProcedureResultListView, TestProcedureResultDetailView, UserView, CreateProjectView, DeleteProjectView, DeleteTestView, CreateTestView, CreateTestProcedureView, CreateTestProcedureResultView, ProjectsView, DeleteTestProcedureView, DeleteTestProcedureResultsView, DeleteAcceptanceTestResultsView
 
 app_name = 'user_tests'
 urlpatterns = [
     path('projects/', ProjectsView.as_view(), name='user_view'), # Done
 
     path('users/', UserView.as_view(), name='user_view'), # Done
-    path('users/detail', UserView.as_view(), name='user_view'), # Done
 
     path('projects/<int:pk>/tests/', TestView.as_view(), name='test_view'), # Done
 
@@ -44,5 +43,6 @@ urlpatterns = [
     path('projects/<int:pk>/tests/<int:test_id>/delete/', DeleteTestView.as_view(), name='delete_test_view'), # Done
     path('projects/<int:pk>/testprocedures/<int:procedure_id>/delete/', DeleteTestProcedureView.as_view(), name='delete_test_procedure_view'), # Done
     path('projects/<int:pk>/testprocedureresults/<int:result_id>/delete/', DeleteTestProcedureResultsView.as_view(), name='delete_test_procedure_result_view'), # Done
+    path('projects/<int:pk>/testresults/<int:result_id>/delete/', DeleteAcceptanceTestResultsView.as_view(), name='delete_test_result_view'), # Done
 
 ]
