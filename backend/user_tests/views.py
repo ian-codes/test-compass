@@ -206,7 +206,7 @@ class TestProcedureResultDetailView(View):
 
 
 
-class TestProcedureView(View):
+class TestProceduresView(View):
     def get(self, request, *args, **kwargs):
         token = Token.objects.get(key=request.COOKIES.get('auth_token'))
         user=token.user
@@ -224,7 +224,7 @@ class TestProcedureView(View):
                 "Project with pk does not exist", status=400
             )        
         
-        if not user in project.user_list.all():
+        if not user in project.user_list.all() and profile.organization != project.organization:
             return HttpResponse(
                 "Unauthorized", status=403
             )
@@ -280,6 +280,28 @@ class ProjectView(View):
 
 
 class UserView(View):
+    def get(self, request, *args, **kwargs):
+        token = Token.objects.get(key=request.COOKIES.get('auth_token'))
+        user=token.user
+        profile = UserProfile.objects.get(user=user)
+        if not profile.organization:
+            return HttpResponse(
+                "This user has no organization", status=400
+            )
+
+        user_json = {
+            "id": profile.id,
+            "email": profile.email,
+            "first_name": profile.first_name,
+            "last_name": profile.last_name,
+            "role": profile.role,
+            "organization_id": profile.organization_id
+        }
+
+        return JsonResponse(user_json, safe=False)
+
+
+class UsersView(View):
     def get(self, request, *args, **kwargs):
         token = Token.objects.get(key=request.COOKIES.get('auth_token'))
         user=token.user
@@ -418,7 +440,7 @@ class CreateTestProcedureView(View):
                 "Project with pk does not exist", status=400
             )        
         
-        if not user in project.user_list.all():
+        if not user in project.user_list.all() and profile.organization != project.organization:
             return HttpResponse(
                 "Unauthorized", status=403
             )
@@ -431,14 +453,15 @@ class CreateTestProcedureView(View):
 
         test_procedure.save()
 
-        for id in data.get("acceptance_tests"):
-            try:
-                test = UserAcceptanceTest.objects.get(pk=id)
-                test_procedure.acceptance_tests.add(test)
-            except UserAcceptanceTest.DoesNotExist:
-                return HttpResponse(
-                "UserAcceptanceTest doesn't exist", status=400
-            )
+        if data.get("acceptance_tests") is not None:
+            for id in data.get("acceptance_tests"):
+                try:
+                    test = UserAcceptanceTest.objects.get(pk=id)
+                    test_procedure.acceptance_tests.add(test)
+                except UserAcceptanceTest.DoesNotExist:
+                    return HttpResponse(
+                    "UserAcceptanceTest doesn't exist", status=400
+                )
 
         
         test_procedure.save()

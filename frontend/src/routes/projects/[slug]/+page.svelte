@@ -1,11 +1,11 @@
-<section class="flex flex-col gap-5">
+<section class="flex min-h-lvh flex-col gap-5">
     {#if procedures}
         <div class="flex flex-row gap-5 justify-start items-center">
             <h2>Test Procedures • {procedures.length}</h2>
 
             <button on:click={handleCreateNew}
                 class="btn !m-0 !w-max inline-block">
-                New Project
+                Add New
             </button>
         </div>
 
@@ -20,8 +20,31 @@
 </section>
 
 
+<section class="flex min-h-lvh flex-col gap-5">
+    {#if uats}
+        <div class="flex flex-row gap-5 justify-start items-center">
+            <h2>User Acceptance Tests • {uats.length}</h2>
+
+            <button on:click={handleCreateNew}
+                class="btn !m-0 !w-max inline-block">
+                Add New
+            </button>
+        </div>
+
+        <ol class="flex flex-wrap items-center justify-center gap-4">
+            {#each uats as uat}
+                <UatCard procedure={uat} />
+            {/each}
+        </ol>
+    {:else}
+        <p class="text-center">Loading user acceptance tests...</p>
+    {/if}
+</section>
+
+
 <script>
     import { onMount } from "svelte";
+    import { goto } from "$app/navigation.js";
     import ProcedureCard from "$lib/procedures/ProcedureCard.svelte";
 
     export let data;
@@ -52,6 +75,6 @@
     }
 
     function handleCreateNew() {
-
+        goto(`${data.id}/new-test-procedure`)
     }
 </script>

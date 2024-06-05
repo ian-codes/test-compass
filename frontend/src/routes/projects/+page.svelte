@@ -27,7 +27,7 @@
     }
 </script>
 
-<section class="flex flex-col gap-5">
+<section class="flex min-h-lvh flex-col gap-5">
     {#if projects}
         <div class="flex flex-row gap-5 justify-start items-center">
             <h2>Projects • {projects.length}</h2>

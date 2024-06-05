@@ -1,14 +1,14 @@
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const GET_PROJECTS_URL = `${BACKEND_URL}organizations/projects/`;
 
-export async function load({ fetch, params }) {
-    return await getProject(fetch, params.slug);
+export async function load({ fetch }) {
+    let projects = await getProjects(fetch);
+    return { projects }
 }
 
-async function getProject(fetch, projectId) {
-    const url = `${GET_PROJECTS_URL}${projectId}`;
+async function getProjects(fetch) {
     try {
-        const response = await fetch(url, {
+        const response = await fetch(GET_PROJECTS_URL, {
             method: 'GET',
             credentials: 'include'
         });
