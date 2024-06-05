@@ -1,9 +1,46 @@
-<section class="flex min-h-lvh flex-col gap-5">
+<section class="flex flex-col gap-4 relative">
+    <h1 class="text-3xl text-center">
+        {project.name}
+    </h1>
+    <span class="absolute text-sm top-0 right-0 p-4 opacity-60">
+        <span class="select-none">
+            ID:
+        </span>
+        <span>
+            {project.id}
+        </span>
+    </span>
+    <p>
+        {project.description}
+    </p>
+    <div>
+</section>
+
+
+
+
+<div class="flex flex-row justify-center">
+    <button on:click={() => activeTab = "procedures"}
+        class="tab"
+        class:activeTab={activeTab == "procedures"}>
+        Test Procedures
+    </button>
+    <button on:click={() => activeTab = "uats"}
+        class="tab"
+        class:activeTab={activeTab == "uats"}>
+        User Acceptance Tests
+    </button>
+</div>
+
+
+<section id="procedures"
+    class="hidden min-h-lvh flex-col gap-5"
+    class:visible={activeTab == "procedures"}>
     {#if procedures}
-        <div class="flex flex-row gap-5 justify-start items-center">
+        <div class="flex flex-row gap-5 justify-between items-center">
             <h2>Test Procedures • {procedures.length}</h2>
 
-            <button on:click={handleCreateNew}
+            <button on:click={() => goto(`${data.slug}/new-test-procedure`)}
                 class="btn !m-0 !w-max inline-block">
                 Add New
             </button>
@@ -20,12 +57,14 @@
 </section>
 
 
-<section class="flex min-h-lvh flex-col gap-5">
+<section id="user-acceptance-tests"
+    class="hidden min-h-lvh flex-col gap-5"
+    class:visible={activeTab == "uats"}>
     {#if uats}
-        <div class="flex flex-row gap-5 justify-start items-center">
+        <div class="flex flex-row gap-5 justify-between items-center">
             <h2>User Acceptance Tests • {uats.length}</h2>
 
-            <button on:click={handleCreateNew}
+            <button on:click={() => goto(`${data.slug}/new-user-acceptance-test`)}
                 class="btn !m-0 !w-max inline-block">
                 Add New
             </button>
@@ -43,38 +82,27 @@
 
 
 <script>
-    import { onMount } from "svelte";
     import { goto } from "$app/navigation.js";
     import ProcedureCard from "$lib/procedures/ProcedureCard.svelte";
+    import UatCard from "$lib/uats/UatCard.svelte";
 
     export let data;
+    let project = data.project;
+    let procedures = data.procedures;
+    let uats = data.uats;
 
-    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-    let get_test_procedures_url;
-
-    let procedures;
-
-    onMount(async () => {
-        get_test_procedures_url = `${BACKEND_URL}organizations/projects/${data.id}/testprocedures/`;
-        procedures = await getTestProcedures();
-    });
-
-    async function getTestProcedures() {
-        try {
-            const response = await fetch(get_test_procedures_url, {
-                method: 'GET',
-                credentials: 'include'
-            });
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
-            }
-            return await response.json();
-        } catch (error) {
-            console.error('There was a problem with the fetch operation:', error);
-        }
-    }
-
-    function handleCreateNew() {
-        goto(`${data.id}/new-test-procedure`)
-    }
+    let activeTab = "procedures";
 </script>
+
+
+<style lang="postcss">
+    .activeTab {
+        @apply bg-slate-200 dark:bg-slate-700 outline-1 outline;
+    }
+    .tab {
+        @apply px-4 py-2 rounded-md;
+    }
+    .visible {
+        @apply flex;
+    }
+</style>

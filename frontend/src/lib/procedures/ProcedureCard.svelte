@@ -30,19 +30,6 @@
             {procedure.description}
         </p>
     </div>
-
-    <a href="/projects/{procedure.id}"
-        class="hover:scale-105
-        flex flex-row items-center gap-2
-        btn-secondary hover:bg-white dark:text-white dark:hover:text-black
-        hover:text-black text-white 
-        transition-all">
-        
-        <span style="background-image: url('/open.svg');" 
-            class="hover transition-all block icon w-5 h-5" />
-        
-        Show Details
-    </a>
 </li>
 
 <style lang="postcss">

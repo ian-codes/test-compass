@@ -11,7 +11,7 @@
     <Header />
     <main class="dark:text-white dark:bg-slate-800
         h-full bg-slate-100 p-2 py-8 min-h-lvh
-        flex flex-col gap-10">
+        flex flex-col items-center gap-10">
         <slot />
     </main>
 </div>

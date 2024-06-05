@@ -12,7 +12,7 @@
         <span class="dark:text-white tracking-widest uppercase">Test Compass</span>
     </a>
     
-    <div class="flex flex-row items-cente gap-5">
+    <div class="flex flex-row items-cente p-4 gap-5">
         <ThemeSwitcher />
         <Nav />
     </div>

@@ -1,6 +1,7 @@
 <script>
     import ProjectCard from "$lib/projects/ProjectCard.svelte";
     import { onMount } from "svelte";
+    import { goto } from "$app/navigation.js";
 
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
     const GET_PROJECTS_URL = `${BACKEND_URL}organizations/projects/`;

@@ -1,8 +1,8 @@
 <script>
-    export let procedure;
+    export let uat;
 </script>
 
-<li id="#{procedure.id}" 
+<li id="#{uat.id}" 
     class="p-10 text-white rounded-lg shadow-xl
     max-w-sm w-full relative
     bg-gradient-to-tr from-cyan-400 to-blue-600
@@ -13,25 +13,46 @@
             ID:
         </span>
         <span>
-            {procedure.id}
+            {uat.id}
         </span>
     </span>
 
     <div class="flex flex-col justify-between items-start">
         <span class="font-extralight text-md">Name</span>
         <h3 class="text-2xl font-bold">
-            {procedure.name}
+            {uat.name}
         </h3>
     </div>
 
     <div class="flex flex-col justify-between items-start">
         <span class="font-extralight text-md">Description</span>
         <p class="text-xl">
-            {procedure.description}
+            {uat.description}
         </p>
     </div>
 
-    <a href="/projects/{procedure.id}"
+    <div class="flex flex-col justify-between items-start">
+        <span class="font-extralight text-md">Preconditions</span>
+        <p class="text-xl">
+            {uat.pre_conditions}
+        </p>
+    </div>
+
+    <div class="flex flex-col justify-between items-start">
+        <span class="font-extralight text-md">Steps</span>
+        <p class="text-xl">
+            {uat.steps}
+        </p>
+    </div>
+
+    <div class="flex flex-col justify-between items-start">
+        <span class="font-extralight text-md">Expected Result</span>
+        <p class="text-xl">
+            {uat.expected_result}
+        </p>
+    </div>
+
+    <a href="/projects/{uat.id}"
         class="hover:scale-105
         flex flex-row items-center gap-2
         btn-secondary hover:bg-white dark:text-white dark:hover:text-black
