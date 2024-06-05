@@ -1,8 +1,8 @@
 <script>
-    export let project;
+    export let procedure;
 </script>
 
-<li id="#{project.id}" 
+<li id="#{procedure.id}" 
     class="p-10 text-white rounded-lg shadow-xl
     max-w-sm w-full relative
     bg-gradient-to-tr from-cyan-400 to-blue-600
@@ -13,25 +13,25 @@
             ID:
         </span>
         <span>
-            {project.id}
+            {procedure.id}
         </span>
     </span>
 
     <div class="flex flex-col justify-between items-start">
         <span class="font-extralight text-md">Name</span>
         <h3 class="text-2xl font-bold">
-            {project.name}
+            {procedure.name}
         </h3>
     </div>
 
     <div class="flex flex-col justify-between items-start">
         <span class="font-extralight text-md">Description</span>
         <p class="text-xl">
-            {project.description}
+            {procedure.description}
         </p>
     </div>
 
-    <a href="/projects/{project.id}"
+    <a href="/projects/{procedure.id}"
         class="hover:scale-105
         flex flex-row items-center gap-2
         btn-secondary hover:bg-white dark:text-white dark:hover:text-black

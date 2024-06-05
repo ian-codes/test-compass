@@ -2,11 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+    scroll-behavior: smooth;
+}
 h2 {
-    @apply mb-4 text-xl font-extralight uppercase tracking-widest
+    @apply text-xl font-extralight uppercase tracking-widest
 }
 section {
-    @apply shadow-lg px-4 py-10 rounded-md outline-slate-300 outline-1 outline
+    @apply shadow-lg px-4 py-10 dark:outline-slate-700 rounded-md outline-slate-300 
+    outline-1 outline
 }
 input, textarea {
     @apply p-2 rounded-md
@@ -18,7 +22,7 @@ input, textarea {
     @apply outline outline-red-400 outline-2
 }
 .btn {
-    @apply dark:text-black hover:text-black hover:bg-white hover:scale-105
+    @apply dark:text-black font-bold text-white hover:text-primary hover:bg-white hover:scale-105
      hover:outline-primary hover:outline transition-all
      bg-primary mt-5 px-4 py-2 rounded-lg w-full
 }

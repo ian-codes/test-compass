@@ -250,6 +250,35 @@ class ProjectsView(View):
         return JsonResponse(list(projects.values()), safe=False)
 
 
+class ProjectView(View):
+    def get(self, request, project_id, *args, **kwargs):
+        token = Token.objects.get(key=request.COOKIES.get('auth_token'))
+        user=token.user
+        profile = UserProfile.objects.get(user=user)
+        if not profile.organization:
+            return HttpResponse(
+                "This user has no organization", status=400
+            )
+        
+        organization = profile.organization
+
+        try:
+            project = Project.objects.get(id=project_id)
+            if project.organization != organization:
+                return HttpResponse("Not authorized to view this project", status=403)
+            
+            project_json = {
+                'id': project.id,
+                'name': project.name,
+                'description': project.description,
+                'created_at': project.created_at
+            }
+
+            return JsonResponse(project_json, content_type='application/json', safe=False)
+        except Project.DoesNotExist:
+            return HttpResponse("Project not found", status=404)
+
+
 class UserView(View):
     def get(self, request, *args, **kwargs):
         token = Token.objects.get(key=request.COOKIES.get('auth_token'))

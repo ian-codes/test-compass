@@ -17,15 +17,8 @@
 
 
 {#if projects}
-    <section class="flex flex-col gap-5">
-        <div class="flex flex-row gap-5 justify-start items-center">
-            <h2 class="m-0">Projects • {projects.length}</h2>
-
-            <button on:click={() => goto("/projects/new")}
-                class="btn !m-0 !w-max inline-block">
-                New Project
-            </button>
-        </div>
+    <section id="projects" class="flex flex-col gap-5">
+        <h2 class="m-0">Projects • {projects.length}</h2>
 
         <ol class="flex flex-wrap items-center justify-center gap-4">
             {#each projects as project}

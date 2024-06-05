@@ -25,12 +25,12 @@
             if (response.ok) {
                 hasFailed = false;
             } else {
-                hasFailed = false;
+                hasFailed = true;
                 invalid = false;
             }
         }
         catch {
-            hasFailed = false;
+            hasFailed = true;
         }
     }
 </script>

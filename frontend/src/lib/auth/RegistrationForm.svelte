@@ -103,6 +103,8 @@
 
 
 <script>
+    import { goto } from "$app/navigation.js";
+
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
     const REGISTER_URL = `${BACKEND_URL}account/register/`;
 
@@ -119,8 +121,8 @@
         if (!validateInputs())
             return
 
-        let token = await makeRegisterPostRequest()
-
+        await makeRegisterPostRequest()
+        
         resetInputValues()
     }
 
@@ -145,7 +147,6 @@
 
     async function makeRegisterPostRequest() {
         let payload = generatePayload()
-        console.log(payload)
 
         try {
             const response = await fetch(REGISTER_URL, {
@@ -160,9 +161,9 @@
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-
-            const data = await response.json()
-            return data.token
+            else {
+                goto("/");
+            }
         }
         catch {
             return null;
