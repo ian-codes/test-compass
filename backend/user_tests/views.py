@@ -314,7 +314,7 @@ class UserView(View):
             "first_name": user.first_name,
             "last_name": user.last_name,
             "role": profile.role,
-            "organization_id": profile.organization_id
+            "organization_id": profile.organization.id
         }
 
         return JsonResponse(user_json, safe=False)

@@ -44,16 +44,6 @@ class RestrictedView(APIView):
     def get(self, request):
         return Response(data={"message": "This is a restricted area, welcome!"})
 
-def some_protected_view(request):
-    token = request.COOKIES.get('auth_token')
-    if token:
-        print(token)
-        try: 
-            Token.objects.get(key=token)
-            return HttpResponse("Access to protected data")
-        except:
-            return HttpResponse("Invalid or expired token", status=401)
-
         
 class LoginView(APIView):
     permission_classes = ()  # Allows unauthenticated access
