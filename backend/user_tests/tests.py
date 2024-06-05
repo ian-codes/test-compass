@@ -27,7 +27,7 @@ class ViewTests(TestCase):
         )
         self.user.set_password("password")
         self.user.save()
-        #self.user_profile = UserProfile.objects.create(user=self.user, organization=self.organization)
+
         profile = UserProfile.objects.get(user=self.user)
         profile.organization = self.organization
         profile.role = Roles.ORGANIZATION_LEADER
