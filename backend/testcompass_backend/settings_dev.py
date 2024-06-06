@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'organizations',
     "rest_framework",
     'corsheaders',
+    'django.contrib.admindocs'
 ]
 
 CORS_ALLOW_METHODS = [
