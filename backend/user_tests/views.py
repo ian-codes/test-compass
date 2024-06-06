@@ -9,36 +9,40 @@ from django.http import JsonResponse, HttpResponse, Http404
 from .models import UserAcceptanceTest, UserAcceptanceTestResult, TestProcedureResult, TestProcedure, User, Project
 from organizations.models import UserProfile, Organization, Token
 
-class OrganizationView(View):
-    def get(self, request, *args, **kwargs):
-        token = Token.objects.get(key=request.COOKIES.get('auth_token'))
-        user=token.user
-        profile = UserProfile.objects.get(user=user)
-        if not profile.organization:
-            return HttpResponse(
-                "This user has no organization", status=400
-            )
-        
-        organization = Organization.objects.get(id=profile.organization_id)
-
-        organization_json = {
-            'name': organization.name
-        }
-
-        return JsonResponse(organization_json, safe=False)
-
-
 # List Views
+
 class TestsView(View):
+    """
+    A list of acceptancetests :model:`user_tests.UserAcceptanceTest` as JSON.
+
+    **Return-Value**
+
+    ``test_list``
+        An list of :model:`user_tests.UserAcceptanceTest` instances.
+
+    **Parameters:**
+    - 'pk': Primary key of project of which the tests should be returned
+   
+    """
     def get(self, request, *args, **kwargs):
+        """
+            Gets JWT-Token from request cookies and checks if they exist in the database
+        """
         token = Token.objects.get(key=request.COOKIES.get('auth_token'))
         user=token.user
         profile = UserProfile.objects.get(user=user)
+
+        """
+            Checks wether user is part of an organization (:model:`organizations.Organization)
+        """
         if not profile.organization:
             return HttpResponse(
                 "This user has no organization", status=400
             )
         project = None
+        """
+            Checks wether project (:model:`user_tests.Project`) with id passed in URL exists
+        """
         try:    
             project = Project.objects.get(pk=kwargs.get('pk'))        
 
@@ -46,8 +50,10 @@ class TestsView(View):
           return HttpResponse(
                 "Project with pk does not exist", status=400
             )        
-        
-        if not user in project.user_list.all() and profile.organization != project.organization:
+        """
+            Checks wether user (:model:`auth.User`) is associated with project (:model:`user_tests.Project`) with id passed in URL
+        """
+        if not user in project.user_list.all():
             return HttpResponse(
                 "Unauthorized", status=403
             )        
@@ -59,15 +65,32 @@ class TestsView(View):
 
 
 class TestProcedureDetailView(View):
+    """
+    A certain testprocedure (:model:`user_tests.TestProcedure`) with associated tests (:model:`user_tests.UserAcceptanceTest`) .
+
+    **Return-Value**
+
+    ``test_procedure_json``
+        A json of :model:`user_tests.UserAcceptanceTest` instances.
+
+    **Parameters:**
+    - 'pk': Primary key of project of the test procedure
+    - 'procedure_id': Primary key of procedure to get
+    """
     def get(self, request, *args, **kwargs):
+        """
+            Repetitive Code to check for permission, check doc of TestView to gain more information
+        """
         token = Token.objects.get(key=request.COOKIES.get('auth_token'))
         user=token.user
         profile = UserProfile.objects.get(user=user)
+
         if not profile.organization:
             return HttpResponse(
                 "This user has no organization", status=400
             )
         project = None
+
         try:    
             project = Project.objects.get(pk=kwargs.get('pk'))        
 
@@ -75,12 +98,15 @@ class TestProcedureDetailView(View):
           return HttpResponse(
                 "Project with pk does not exist", status=400
             )        
-        
+  
         if not user in project.user_list.all():
             return HttpResponse(
                 "Unauthorized", status=403
             )
         
+        """
+            Gets TestProcedure with procedure_id from key-word-arguments (kwargs)
+        """
         try:
             test_procedure = TestProcedure.objects.get(project=project, pk=kwargs.get('procedure_id'))
         except TestProcedure.DoesNotExist:
@@ -90,7 +116,9 @@ class TestProcedureDetailView(View):
         
         test_procedure_tests = []
 
-
+        """
+            Adds each test (:model:`user_tests.UserAcceptanceTest`) in the list of tests 
+        """
         for test in test_procedure.acceptance_tests.all():
             test_procedure_tests.append(
                 {
@@ -114,15 +142,26 @@ class TestProcedureDetailView(View):
             'tests':test_procedure_tests
         }
 
-
-   
-        
         return JsonResponse(test_procedure_json, safe=False)
 
 
 class TestProcedureResultListView(View):
+    """
+    A list of testprocedure results (:model:`user_tests.TestProcedureResult`).
+
+    **Return-Value**
+
+    ``test_procedure_result_list``
+        A list of testprocedure results(:model:`user_tests.TestProcedureResult`) as JSON.
+
+    **Parameters:**
+    - 'pk': Primary key of project of which the procedure results should be returned
+    """
     def get(self, request, *args, **kwargs):
 
+        """
+            Repetitive Code to check for permission, check doc of TestView to gain more information
+        """
         token = Token.objects.get(key=request.COOKIES.get('auth_token'))
         user=token.user
         profile = UserProfile.objects.get(user=user)
@@ -159,11 +198,26 @@ class TestProcedureResultListView(View):
             }
             test_procedure_result_list.append(result_data)
 
+        
         return JsonResponse(test_procedure_result_list, safe=False)
     
 class TestProcedureResultDetailView(View):
-    def get(self, request, *args, **kwargs):
+    """
+    Details of testprocedure result (:model:`user_tests.TestProcedureResult`) with associated testresults (:model:`user_tests.UserAcceptanceTest`) .
 
+    **Return-Value**
+
+    ``test_procedure_json``
+        A JSON with TestProcedureResult results(:model:`user_tests.TestProcedureResult`),.
+
+    **Parameters:**
+    - 'pk': Primary key of project of which the procedure result should be returned
+    - 'result_id': Primary key of procedure result to get
+    """
+    def get(self, request, *args, **kwargs):
+        """
+            Repetitive Code to check for permission, check doc of TestView to gain more information
+        """
         token = Token.objects.get(key=request.COOKIES.get('auth_token'))
         user=token.user
         profile = UserProfile.objects.get(user=user)
@@ -226,7 +280,21 @@ class TestProcedureResultDetailView(View):
 
 
 class TestProceduresView(View):
+    """
+    List of testprocedures (:model:`user_tests.TestProcedure`)
+
+    **Return-Value**
+
+    ``test_procedure_list``
+        A list with TestProcedures (:model:`user_tests.TestProcedure`),.
+
+    **Parameters:**
+    - 'pk': Primary key of project of which the procedures should be returned
+    """
     def get(self, request, *args, **kwargs):
+        """
+            Repetitive Code to check for permission, check doc of TestView to gain more information
+        """
         token = Token.objects.get(key=request.COOKIES.get('auth_token'))
         user=token.user
         profile = UserProfile.objects.get(user=user)
@@ -255,7 +323,21 @@ class TestProceduresView(View):
 
 
 class ProjectsView(View):
+    """
+    List of projects in organization (:model:`user_tests.Projects`)
+
+    **Return-Value**
+
+    ``list(projects.values())``
+        A List of projects (:model:`user_tests.Projects`) as JSON.
+
+    **Parameters:**
+
+    """
     def get(self, request, *args, **kwargs):
+        """
+            Repetitive Code to check for permission, check doc of TestView to gain more information
+        """
         token = Token.objects.get(key=request.COOKIES.get('auth_token'))
         user=token.user
         profile = UserProfile.objects.get(user=user)
@@ -270,7 +352,21 @@ class ProjectsView(View):
 
 
 class ProjectView(View):
+    """
+    Details of project (:model:`user_tests.Projects`) as JSON
+
+    **Return-Value**
+
+    ``project_json``
+        A project (:model:`user_tests.Projects`) as JSON.
+
+    **Parameters:**
+    - 'pk': Primary key of project which should be returned
+    """
     def get(self, request, project_id, *args, **kwargs):
+        """
+            Repetitive Code to check for permission, check doc of TestView to gain more information
+        """
         token = Token.objects.get(key=request.COOKIES.get('auth_token'))
         user=token.user
         profile = UserProfile.objects.get(user=user)
@@ -299,7 +395,21 @@ class ProjectView(View):
 
 
 class UserView(View):
+    """
+    Details of User (:model:`auth.User`) as JSON
+
+    **Return-Value**
+
+    ``user_json``
+        Requesting User (:model:`auth.User`) as JSON.
+
+    **Parameters:**
+    - 'auth_token': JWT-Authorization-Token passed as http-only-cookie
+    """
     def get(self, request, *args, **kwargs):
+        """
+            Repetitive Code to check for permission, check doc of TestView to gain more information
+        """
         token = Token.objects.get(key=request.COOKIES.get('auth_token'))
         user=token.user
         profile = UserProfile.objects.get(user=user)
@@ -321,7 +431,21 @@ class UserView(View):
 
 
 class UsersView(View):
+    """
+    List of Users (:model:`auth.User`) in organization as JSON
+
+    **Return-Value**
+
+    ``user_list``
+        List of Users (:model:`auth.User`) as JSON.
+
+    **Parameters:**
+    - 'auth_token': JWT-Authorization-Token passed as http-only-cookie
+    """
     def get(self, request, *args, **kwargs):
+        """
+            Repetitive Code to check for permission, check doc of TestView to gain more information
+        """
         token = Token.objects.get(key=request.COOKIES.get('auth_token'))
         user=token.user
         profile = UserProfile.objects.get(user=user)
@@ -352,13 +476,34 @@ class UsersView(View):
 
 # Create Views
 class CreateProjectView(View):
-
+    """
+        Checks for csrf_token to prevent cross-site-request-forgery
+    """
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+    """
+    Endpoint to create of Project (:model:`user_tests.Project`)
 
+    **Body**
+    {
+        "name": <str:project-name>,
+        "description": <str:project-description>,
+        "users": <list[int]:user-ids>
+    }
+
+    **Return-Value**
+
+    ``Status: 201 - Created``
+
+    **Parameters:**
+    - 'auth_token': JWT-Authorization-Token passed as http-only-cookie
+    """
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
+        """
+            Repetitive Code to check for permission, check doc of TestView to gain more information
+        """
         token = Token.objects.get(key=request.COOKIES.get('auth_token'))
         profile = UserProfile.objects.get(user=token.user)
         
@@ -390,11 +535,34 @@ class CreateProjectView(View):
         )
 
 class CreateTestView(View):
-
+    """
+        Checks for csrf_token to prevent cross-site-request-forgery
+    """
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
+    """
+    Endpoint to create Acceptance Test (:model:`user_tests.UserAcceptanceTest`)
+
+    **Body**
+    {
+        "name": <str:name>,
+        "description": <str:description>,
+        "pre_conditions": <str:coditions>,
+        "steps": <str:steps>,
+        "expected_result": <str:result>
+    }
+
+    **Return-Value**
+
+    ``Status: 201 - Created``
+
+    **Parameters:**
+    - 'auth_token': JWT-Authorization-Token passed as http-only-cookie
+    - 'pk': Primary key of project in which test should be created
+
+    """
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
 
@@ -435,11 +603,32 @@ class CreateTestView(View):
         )
 
 class CreateTestProcedureView(View):
-
+    """
+        Checks for csrf_token to prevent cross-site-request-forgery
+    """
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
+    """
+    Endpoint to create TestProcedure (:model:`user_tests.TestProcedure`)
+
+    **Body**
+    {
+        "name": <str:name>,
+        "description": <str:description>,
+        "acceptance_tests": <list[int]:test-ids>
+    }
+
+    **Return-Value**
+
+    ``Status: 201 - Created``
+
+    **Parameters:**
+    - 'auth_token': JWT-Authorization-Token passed as http-only-cookie
+    - 'pk': Primary key of project in which procedure should be created
+
+    """
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
 
@@ -490,11 +679,37 @@ class CreateTestProcedureView(View):
         )
 
 class CreateTestProcedureResultView(View):
-
+    """
+        Checks for csrf_token to prevent cross-site-request-forgery
+    """
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
+    """
+    Endpoint to create TestProcedure result (:model:`user_tests.TestProcedureResult`)
+
+    **Body**
+    {
+        "tests": [
+            {
+                "id": <int:test-id>,
+                "status": <str:status>,
+                "notes": <str:notes>
+            }
+        ] 
+    }
+
+    **Return-Value**
+
+    ``Status: 201 - Created``
+
+    **Parameters:**
+    - 'auth_token': JWT-Authorization-Token passed as http-only-cookie
+    - 'pk': Primary key of project in which procedure result should be created
+    - 'procedure_id': Primary key of procedure for which result should be created
+
+    """
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
 
@@ -544,11 +759,26 @@ class CreateTestProcedureResultView(View):
 
 # Delete Views
 class DeleteProjectView(View):
-
+    """
+        Checks for csrf_token to prevent cross-site-request-forgery
+    """
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
+    """
+    Endpoint to delete project (:model:`user_tests.Project`)
+
+
+    **Return-Value**
+
+    ``Status: 200 - Deleted``
+
+    **Parameters:**
+    - 'auth_token': JWT-Authorization-Token passed as http-only-cookie
+    - 'pk': Primary key of project which should be deleted
+
+    """
     def delete(self, request, *args, **kwargs):
         token = Token.objects.get(key=request.COOKIES.get('auth_token'))
         user = token.user
@@ -579,10 +809,27 @@ class DeleteProjectView(View):
 
 class DeleteTestView(View):
 
+    """
+        Checks for csrf_token to prevent cross-site-request-forgery
+    """
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
+    """
+    Endpoint to delete test (:model:`user_tests.UserAcceptanceTest`)
+
+
+    **Return-Value**
+
+    ``Status: 200 - Deleted``
+
+    **Parameters:**
+    - 'auth_token': JWT-Authorization-Token passed as http-only-cookie
+    - 'pk': Primary key of project 
+    - 'test_id': Primary key of test which should be deleted
+
+    """
     def delete(self, request, *args, **kwargs):
         token = Token.objects.get(key=request.COOKIES.get('auth_token'))
         user = token.user
@@ -615,7 +862,27 @@ class DeleteTestView(View):
         )
     
 class DeleteTestProcedureView(View):
+    """
+        Checks for csrf_token to prevent cross-site-request-forgery
+    """
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
+    """
+    Endpoint to delete test procedure (:model:`user_tests.TestProcedure`)
+
+
+    **Return-Value**
+
+    ``Status: 200 - Deleted``
+
+    **Parameters:**
+    - 'auth_token': JWT-Authorization-Token passed as http-only-cookie
+    - 'pk': Primary key of project in which procedure should be deleted
+    - 'procedure_id': Primary key of procedure which should be deleted
+
+    """
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)

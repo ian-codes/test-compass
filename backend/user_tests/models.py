@@ -9,6 +9,10 @@ class TestStatus(models.TextChoices):
     PENDING = 'PENDING', "Pending"
 
 
+"""
+    Stores project details including name and associated 
+    :model:`auth.User` as users.
+"""
 class Project(models.Model):
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, verbose_name="Organisation", null=False, blank=False)
     name = models.CharField(max_length=150, blank=False, null=False, verbose_name="Name")
@@ -21,8 +25,14 @@ class Project(models.Model):
     )
 
     def __str__(self):
+        """
+            Returns the name of the project per default when calling the object
+        """
         return self.name
 
+"""
+    Stores test information including creator (:model:`auth.User`) and assosciated project (:model:`user_tests.Project`)
+"""
 class UserAcceptanceTest(models.Model):
     creator = models.ForeignKey(User, on_delete=models.SET_NULL, verbose_name="Ersteller", null=True, blank=True)
 
@@ -37,9 +47,16 @@ class UserAcceptanceTest(models.Model):
 
     expected_result = models.TextField(verbose_name="Erwartetes Resultat", blank=True, null=True, max_length=500, help_text="Resultat dass nach dem Test erwartet wird")
 
+
     def __str__(self):
+        """
+            Returns the name of the UserAcceptanceTest per default when calling the object
+        """
         return self.name
 
+"""
+    Stores test procedure including a list of tests (:model:`user_tests.UserAcceptanceTest`) and assosciated project (:model:`user_tests.Project`)
+"""
 class TestProcedure(models.Model):
     acceptance_tests = models.ManyToManyField(UserAcceptanceTest, null=True, blank=True)
     name = models.CharField(max_length=150, blank=False, null=False, verbose_name="Name")
@@ -49,8 +66,14 @@ class TestProcedure(models.Model):
 
 
     def __str__(self):
+        """
+            Returns the name of the TestProcedure per default when calling the object
+        """
         return self.name
 
+"""
+    Stores the result of a certain test procedure (:model:`user_tests.TestProcedure`) and creator (:model:`auth.User`)
+"""
 class TestProcedureResult(models.Model):
     creator = models.ForeignKey(User, on_delete=models.SET_NULL, verbose_name="Ersteller", null=True, blank=True)
     test_procedure = models.ForeignKey(TestProcedure, on_delete=models.CASCADE, verbose_name="Testprozedur", null=False, blank=False)
@@ -59,8 +82,14 @@ class TestProcedureResult(models.Model):
 
 
     def __str__(self):
+        """
+            Returns the name of the associated TestProcedure per default when calling the object
+        """
         return self.test_procedure.name
 
+"""
+    Stores the result of a certain useracceptancetest (:model:`user_tests.UserAcceptanceTest`) and is assosciated to a procedure (:model:`user_tests.TestProcedureResult`)
+"""
 class UserAcceptanceTestResult(models.Model):
     test_procedure_result = models.ForeignKey(TestProcedureResult, on_delete=models.CASCADE, verbose_name="Testprozedurresultat", null=False, blank=False)
 
@@ -73,4 +102,7 @@ class UserAcceptanceTestResult(models.Model):
 
 
     def __str__(self):
+        """
+            Returns the name of the associated UserAcceptanceTest per default when calling the object
+        """
         return f"Resultat zu Test {self.acceptance_test}"
