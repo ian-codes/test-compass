@@ -3,6 +3,9 @@ from django.urls import include, path, re_path
 from rest_framework.authtoken.views import obtain_auth_token
 from .views import SignupView, UserInviteView, OrgInvitationView, LoginView, LogoutView
 
+"""
+    URL-Patterns for API-Endpoint. Each url shows to a view in (organizations.views.py)
+"""
 app_name = 'organizations'
 urlpatterns = [
     path('auth/', include('rest_framework.urls', namespace='rest_framework')),

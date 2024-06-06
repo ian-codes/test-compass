@@ -2,6 +2,10 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 from .views import OrganizationView, ProjectView, UserView, TestsView, TestProceduresView, TestProcedureDetailView, TestProcedureResultListView, TestProcedureResultDetailView, UsersView, CreateProjectView, DeleteProjectView, DeleteTestView, CreateTestView, CreateTestProcedureView, CreateTestProcedureResultView, ProjectsView, DeleteTestProcedureView, DeleteTestProcedureResultsView, DeleteAcceptanceTestResultsView
 
+
+"""
+    URL-Patterns for API-Endpoint. Each url shows to a view in (user_tests.views.py)
+"""
 app_name = 'user_tests'
 urlpatterns = [
     path('org/', OrganizationView.as_view(), name='organization_view'), # Done
