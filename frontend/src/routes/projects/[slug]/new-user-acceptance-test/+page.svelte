@@ -2,7 +2,7 @@
     py-12 bg-slate-200">
 
     <h2 class="text-center text-xl font-mono font-extralight">
-        New Test Procedure
+        New User Acceptance Test
     </h2>
 
     <form on:submit|preventDefault={handleSubmit}
@@ -15,7 +15,7 @@
             </label>
 
             <input 
-                bind:value={procedure.name}
+                bind:value={uat.name}
                 id="name"
                 name="name"
                 type="text"
@@ -30,12 +30,57 @@
             </label>
 
             <textarea 
-                bind:value={procedure.description}
+                bind:value={uat.description}
                 id="description" 
                 name="description"
                 type="text"
                 minlength="10"
                 class:invalid={errors.description}
+                class="resize-y h-16 max-h-32"></textarea>
+        </div>
+
+        <div class="input-container">
+            <label for="name">
+                Preconditions
+            </label>
+
+            <textarea 
+                bind:value={uat.preconditions}
+                id="preconditions" 
+                name="preconditions"
+                type="text"
+                minlength="10"
+                class:invalid={errors.preconditions}
+                class="resize-y h-16 max-h-32"></textarea>
+        </div>
+
+        <div class="input-container">
+            <label for="name">
+                Steps
+            </label>
+
+            <textarea 
+                bind:value={uat.steps}
+                id="steps" 
+                name="steps"
+                type="text"
+                minlength="10"
+                class:invalid={errors.steps}
+                class="resize-y h-16 max-h-32"></textarea>
+        </div>
+
+        <div class="input-container">
+            <label for="expected-result">
+                Expected Result
+            </label>
+
+            <textarea 
+                bind:value={uat.expected_result}
+                id="expected-result" 
+                name="expected-result"
+                type="text"
+                minlength="10"
+                class:invalid={errors.expected_result}
                 class="resize-y h-16 max-h-32"></textarea>
         </div>
 
@@ -64,16 +109,21 @@
     export let data;
     const back_url = `/projects/${data.slug}`;
 
+
     let createFailed = false;
 
-    let procedure = {
+    let uat = {
         name: "",
-        description: ""
+        description: "",
+        preconditions: "",
+        expected_result: ""
     }
 
     let errors = {
         name: false,
-        description: false
+        description: false,
+        preconditions: false,
+        expected_result: false
     }
 
     async function handleSubmit() {
@@ -95,8 +145,8 @@
     }
 
     function areInputsValid() {
-        errors.name = !procedure.name.trim();
-        errors.description = !procedure.description.trim();
+        errors.name = !uat.name.trim();
+        errors.description = !uat.description.trim();
         return !Object.values(errors).includes(true);
     }
 
@@ -105,7 +155,7 @@
         return await fetch(url, {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(procedure),
+            body: JSON.stringify(uat),
             credentials: 'include'
         })
     }

@@ -9,8 +9,27 @@ from django.http import JsonResponse, HttpResponse, Http404
 from .models import UserAcceptanceTest, UserAcceptanceTestResult, TestProcedureResult, TestProcedure, User, Project
 from organizations.models import UserProfile, Organization, Token
 
+class OrganizationView(View):
+    def get(self, request, *args, **kwargs):
+        token = Token.objects.get(key=request.COOKIES.get('auth_token'))
+        user=token.user
+        profile = UserProfile.objects.get(user=user)
+        if not profile.organization:
+            return HttpResponse(
+                "This user has no organization", status=400
+            )
+        
+        organization = Organization.objects.get(id=profile.organization_id)
+
+        organization_json = {
+            'name': organization.name
+        }
+
+        return JsonResponse(organization_json, safe=False)
+
+
 # List Views
-class TestView(View):
+class TestsView(View):
     def get(self, request, *args, **kwargs):
         token = Token.objects.get(key=request.COOKIES.get('auth_token'))
         user=token.user
@@ -28,7 +47,7 @@ class TestView(View):
                 "Project with pk does not exist", status=400
             )        
         
-        if not user in project.user_list.all():
+        if not user in project.user_list.all() and profile.organization != project.organization:
             return HttpResponse(
                 "Unauthorized", status=403
             )        

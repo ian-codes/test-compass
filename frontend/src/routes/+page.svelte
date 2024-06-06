@@ -1,5 +1,10 @@
-<section>
-    <h2>Organization</h2>
+
+<h1 class="text-3xl">
+    Hey, {user?.first_name ?? "Loading..."}.
+</h1>
+
+<section class="flex flex-col gap-4">
+    <h2>Organization • {organization?.name ?? "Loading..."}</h2>
     <InviteComponent /> <!-- only show if user is manager -->
 </section>
 
@@ -15,13 +20,12 @@
     </div>
 </section> -->
 
-
-{#if data.projects}
+{#if projects}
     <section id="projects" class="flex flex-col gap-5">
-        <h2 class="m-0">Projects • {data.projects.length}</h2>
+        <h2 class="m-0">Projects • {projects.length}</h2>
 
         <ol class="flex flex-wrap items-center justify-center gap-4">
-            {#each data.projects as project}
+            {#each projects as project}
                 <ProjectCard project={project} />
             {/each}
         </ol>
@@ -35,4 +39,8 @@
     import ProjectCard from "$lib/projects/ProjectCard.svelte";
 
     export let data;
+
+    let user = data.user;
+    let projects = data.projects;
+    let organization = data.organization;
 </script>

@@ -41,7 +41,7 @@
         <span style="background-image: url('/open.svg');" 
             class="hover transition-all block icon w-5 h-5" />
         
-        Show Details
+        Go to Project
     </a>
 </li>
 

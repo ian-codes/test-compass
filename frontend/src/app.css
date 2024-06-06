@@ -9,20 +9,20 @@ h2 {
     @apply text-xl font-extralight uppercase tracking-widest
 }
 section {
-    @apply shadow-lg px-4 py-10 dark:outline-slate-700 rounded-md outline-slate-300 
+    @apply max-w-3xl w-full p-8 dark:outline-slate-700 rounded-md outline-slate-300 
     outline-1 outline
 }
 input, textarea {
     @apply p-2 rounded-md
 }
 .input-container {
-    @apply flex flex-col gap-1  p-2 w-full
+    @apply flex flex-col gap-1 w-full
 }
 .invalid {
     @apply outline outline-red-400 outline-2
 }
 .btn {
-    @apply dark:text-black font-bold text-white hover:text-primary hover:bg-white hover:scale-105
+    @apply dark:text-black shadow-md font-bold text-white hover:text-primary hover:bg-white hover:scale-105
      hover:outline-primary hover:outline transition-all
      bg-primary mt-5 px-4 py-2 rounded-lg w-full
 }
