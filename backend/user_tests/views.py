@@ -11,6 +11,25 @@ from organizations.models import UserProfile, Organization, Token
 
 # List Views
 
+class OrganizationView(View):
+    def get(self, request, *args, **kwargs):
+        token = Token.objects.get(key=request.COOKIES.get('auth_token'))
+        user=token.user
+        profile = UserProfile.objects.get(user=user)
+        if not profile.organization:
+            return HttpResponse(
+                "This user has no organization", status=400
+            )
+        
+        organization = Organization.objects.get(id=profile.organization.id)
+
+        organization_json = {
+            'name': organization.name
+        }
+
+        return JsonResponse(organization_json, safe=False)
+
+
 class TestsView(View):
     """
     A list of acceptancetests :model:`user_tests.UserAcceptanceTest` as JSON.

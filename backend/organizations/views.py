@@ -44,6 +44,23 @@ class RestrictedView(APIView):
     def get(self, request):
         return Response(data={"message": "This is a restricted area, welcome!"})
 
+class LogoutView(APIView):
+    permission_classes = ()
+
+    def post(self, request):
+        try:
+            token = Token.objects.get(key=request.COOKIES.get('auth_token'))
+        except:
+            return Response({"error": "Token not found"}, status=400)
+
+        if token:
+            token.delete()
+            response = Response({"message": "Logout successful"}, status=200)
+            response.delete_cookie('auth_token')
+            response.delete_cookie('csrf_token')
+            return response
+
+        return Response({"error": "Token not found"}, status=400)
         
 class LoginView(APIView):
     permission_classes = ()  # Allows unauthenticated access
@@ -51,8 +68,6 @@ class LoginView(APIView):
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
-        print(username)
-        print(password)
         response = Response()  
         user = authenticate(request, username=username, password=password)
         if user is not None:
