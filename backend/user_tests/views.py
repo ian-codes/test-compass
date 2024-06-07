@@ -775,6 +775,76 @@ class CreateTestProcedureResultView(View):
         return HttpResponse(
                 "created", status=201
         )
+    
+class CreateTestResultView(View):
+    """
+        Checks for csrf_token to prevent cross-site-request-forgery
+    """
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    """
+    Endpoint to create TestProcedure result (:model:`user_tests.TestProcedureResult`)
+
+    **Body**
+            {
+                "id": <int:test-id>,
+                "status": <str:status>,
+                "notes": <str:notes>
+            }
+
+    **Return-Value**
+
+    ``Status: 201 - Created``
+
+    **Parameters:**
+    - 'auth_token': JWT-Authorization-Token passed as http-only-cookie
+    - 'pk': Primary key of project in which procedure result should be created
+
+    """
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+
+        token = Token.objects.get(key=request.COOKIES.get('auth_token'))
+        user=token.user
+        profile = UserProfile.objects.get(user=user)
+        if not profile.organization:
+            return HttpResponse(
+                "This user has no organization", status=400
+            )
+        project = None
+        try:    
+            project = Project.objects.get(pk=kwargs.get('pk'))        
+
+        except Project.DoesNotExist:
+          return HttpResponse(
+                "Project with pk does not exist", status=400
+            )        
+        
+        if not user in project.user_list.all():
+            return HttpResponse(
+                "Unauthorized", status=403
+            )
+        try:
+            acceptance_test = UserAcceptanceTest.objects.get(id=data.get('test_id'), project=project)
+        except UserAcceptanceTest.DoesNotExist:
+            return HttpResponse(
+                "Test does not exist or is not in your project", status=400
+            )
+        try:
+            result = UserAcceptanceTestResult.objects.create(
+                status=data.get('status'),
+                notes=data.get('notes'),
+                acceptance_test = acceptance_test
+            )
+        except:
+            return HttpResponse(
+                "Something went wrong", status=400
+            )
+        return HttpResponse(
+                "created", status=201
+            )
 
 # Delete Views
 class DeleteProjectView(View):
