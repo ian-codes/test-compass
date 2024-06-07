@@ -1,11 +1,11 @@
 <script>
     import CardType from "$lib/global/CardType.svelte";
-    export let uat;
+    export let uatResult;
 </script>
 
-<li id="#{uat.id}" 
-    class="p-10 text-white shadow-xl outline
-    max-w-sm w-full relative overflow-hidden rounded-lg
+<li id="#{uatResult.id}" 
+    class="p-10 text-white rounded-lg shadow-xl
+    max-w-sm w-full relative
     bg-gradient-to-tr from-yellow-500 to-amber-600
     flex flex-col justify-between gap-5">
 
@@ -16,35 +16,35 @@
             ID:
         </span>
         <span>
-            {uat.id}
+            {uatResult.id}
         </span>
     </span>
 
     <div class="flex flex-col justify-between items-start">
         <span class="font-extralight text-md">Name</span>
         <h3 class="text-2xl font-bold">
-            {uat.name}
+            {uatResult.name}
         </h3>
     </div>
 
     <div class="flex flex-col justify-between items-start">
         <span class="font-extralight text-md">Description</span>
         <p class="text-xl">
-            {uat.description}
+            {uatResult.description}
         </p>
     </div>
 
     <div class="flex flex-col justify-between items-start">
         <span class="font-extralight text-md">Preconditions</span>
         <p class="text-xl">
-            {uat.pre_conditions}
+            {uatResult.pre_conditions}
         </p>
     </div>
 
     <div class="flex flex-col justify-between items-start">
         <span class="font-extralight text-md">Steps</span>
         <p class="text-xl">
-            {uat.steps}
+            {uatResult.steps}
         </p>
     </div>
 

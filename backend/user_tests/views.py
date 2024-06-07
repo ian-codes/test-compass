@@ -414,7 +414,7 @@ class CreateTestView(View):
                 "Project with pk does not exist", status=400
             )        
         
-        if not user in project.user_list.all():
+        if not user in project.user_list.all() and profile.organization != project.organization:
             return HttpResponse(
                 "Unauthorized", status=403
             )

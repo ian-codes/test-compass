@@ -1,12 +1,10 @@
-<script>
-    export let procedure;
-</script>
-
 <li id="#{procedure.id}" 
     class="p-10 text-white rounded-lg shadow-xl
-    max-w-sm w-full relative
-    bg-gradient-to-tr from-cyan-400 to-blue-600
+    max-w-sm w-full relative overflow-hidden outline
+    bg-gradient-to-tr from-purple-400 to-violet-600
     flex flex-col justify-between gap-5">
+
+    <CardType type={"Procedure"} />
 
     <span class="absolute text-sm top-0 right-0 p-4 opacity-60">
         <span class="select-none">
@@ -31,6 +29,13 @@
         </p>
     </div>
 </li>
+
+
+<script>
+    import CardType from "$lib/global/CardType.svelte";
+    export let procedure;
+</script>
+
 
 <style lang="postcss">
     .details-wrapper {
