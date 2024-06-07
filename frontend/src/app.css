@@ -9,7 +9,7 @@ h2 {
     @apply text-xl font-extralight uppercase tracking-widest
 }
 section {
-    @apply max-w-3xl w-full p-8 dark:outline-slate-700 rounded-md outline-slate-300 
+    @apply max-w-4xl w-full p-8 dark:outline-slate-700 rounded-md outline-slate-300 
     outline-1 outline
 }
 input, textarea {
@@ -31,4 +31,16 @@ input, textarea {
 }
 .icon {
     @apply bg-center bg-no-repeat bg-contain
+}
+.visible {
+    animation: appear forwards 1s ease;
+}
+@keyframes appear {
+    0% {
+        display: block !important;
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }

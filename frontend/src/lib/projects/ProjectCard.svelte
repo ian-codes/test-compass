@@ -1,12 +1,10 @@
-<script>
-    export let project;
-</script>
-
 <li id="#{project.id}" 
     class="p-10 text-white rounded-lg shadow-xl
-    max-w-sm w-full relative
-    bg-gradient-to-tr from-cyan-400 to-blue-600
+    max-w-sm w-full relative outline
+    bg-gradient-to-br from-cyan-500 to-blue-600 overflow-hidden
     flex flex-col justify-between gap-5">
+
+    <CardType type={"Project"} />
 
     <span class="absolute text-sm top-0 right-0 p-4 opacity-60">
         <span class="select-none">
@@ -44,6 +42,13 @@
         Go to Project
     </a>
 </li>
+
+
+<script>
+    import CardType from "$lib/global/CardType.svelte";
+    export let project;
+</script>
+
 
 <style lang="postcss">
     .details-wrapper {
