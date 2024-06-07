@@ -44,19 +44,61 @@ class RestrictedView(APIView):
     def get(self, request):
         return Response(data={"message": "This is a restricted area, welcome!"})
 
+class LogoutView(APIView):
+    permission_classes = ()
+    """
+    Endpoint to Log-Out 
+
+    **Return-Value**
+
+    ``response``
+        Removes JWT-Token from Database and tokens from cookie of response
+
+    """
+    def post(self, request):
+        try:
+            token = Token.objects.get(key=request.COOKIES.get('auth_token'))
+        except:
+            return Response({"error": "Token not found"}, status=400)
+
+        if token:
+            token.delete()
+            response = Response({"message": "Logout successful"}, status=200)
+            response.delete_cookie('auth_token')
+            response.delete_cookie('csrftoken')
+            return response
+
+        return Response({"error": "Token not found"}, status=400)
         
 class LoginView(APIView):
     permission_classes = ()  # Allows unauthenticated access
+    """
+    Endpoint to Log-In 
 
+    **Body**
+    {
+        "username": "<str:username>",
+        "password": "<str:password>"
+    }
+
+    **Return-Value**
+
+    ``response``
+        A response object that contains:
+        - auth_token => JWT-Authorization-Token as a cookie
+        - csrf_token => Token for form submit to prevent cross site request forgery
+
+    """
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
-        print(username)
-        print(password)
         response = Response()  
         user = authenticate(request, username=username, password=password)
         if user is not None:
 
+            """
+                Replaces token on each login
+            """
             token=None
             try:
                 token = Token.objects.get(user=user)
@@ -65,6 +107,7 @@ class LoginView(APIView):
             except Token.DoesNotExist:
 
                 pass
+            
             refresh = RefreshToken.for_user(user)
             access_token = refresh.access_token
             token = Token.objects.create(user=user, key=str(access_token))
@@ -87,6 +130,25 @@ class LoginView(APIView):
         return Response({'error': 'Invalid Credentials'}, status=401)
     
 class SignupView(APIView):
+    """
+    Endpoint to Sign Up (create User) 
+
+    **Body**
+    {
+        "email": "<str:email>",
+        "password": "<str:password>",
+        "first_name": "<str:first_name>",
+        "last_name": "<str:last_name>"
+    }
+
+    **Return-Value**
+
+    ``response``
+        A response object that contains:
+        - auth_token => JWT-Authorization-Token as a cookie
+        - csrf_token => Token for form submit to prevent cross site request forgery
+
+    """
     permission_classes = () 
     def post(self, request, *args, **kwargs):
         # Validate json through schema  
@@ -131,6 +193,10 @@ class SignupView(APIView):
         new_user.set_password(form_data.get("password"))
         new_user.save()
 
+
+        """
+            Creates user and token for user
+        """
         refresh = RefreshToken.for_user(new_user)
         access_token = refresh.access_token
         response = Response() 
@@ -152,6 +218,21 @@ class SignupView(APIView):
 
 
 class UserInviteView(View):
+
+    """
+    Endpoint to sent Invitation link to user. 
+
+    **Body**
+    {
+        "email": "ilianhaesler@gmail.com",
+        "expired_on": "2006-10-25 14:30:59"
+    }
+    **Return-Value**
+
+    ``response``
+        returns 200 - OK
+
+    """
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
@@ -187,6 +268,9 @@ class UserInviteView(View):
             expired_on = expired_on
             )
         
+        """
+            Sents an E-Mail with invite link to user
+        """
         subject = f"Einladung zu Organisation {invite_organization.name}"
         c = {
                             'invite_link': f"http://localhost:8000/organization/{invite_organization.pk}/invite/{generated_hash}",
@@ -203,6 +287,15 @@ class UserInviteView(View):
         return HttpResponse("Invitation sent", status=200)
     
 class OrgInvitationView(View):
+    """
+    Endpoint to accept invitation 
+
+    **Return-Value**
+
+    ``response``
+        returns 200 - OK
+
+    """
     def get(self, request, hash, pk, *args, **kwargs):
         organization = Organization.objects.get(pk=pk)
         invite= None
