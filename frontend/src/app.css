@@ -46,3 +46,10 @@ input, textarea {
         opacity: 1;
     }
 }
+
+.activeTab {
+    @apply  dark:text-black;
+}
+.tab {
+    @apply px-4 py-2 rounded-t-lg;
+}

@@ -35,9 +35,8 @@ urlpatterns = [
 
     path('projects/<int:pk>/tests/<int:test_id>/delete/', DeleteTestView.as_view(), name='delete_test_view'), # Done
     path('projects/<int:pk>/procedures/<int:procedure_id>/delete/', DeleteTestProcedureView.as_view(), name='delete_test_procedure_view'), # Done
-    path('projects/<int:pk>/procedures/results/<int:result_id>/delete/', DeleteTestProcedureResultsView.as_view(), name='delete_test_procedure_result_view'), # Done
-    path('projects/<int:pk>/results/<int:result_id>/delete/', DeleteAcceptanceTestResultsView.as_view(), name='delete_test_result_view'), # Done
-    path('projects/<int:pk>/results/<int:result_id>/', TestResultDetailView.as_view(), name='test_result_view'), # Done
+    path('projects/<int:pk>/procedures/<int:procedure_id>/results/<int:result_id>/delete/', DeleteTestProcedureResultsView.as_view(), name='delete_test_procedure_result_view'), # Done
+    path('projects/<int:pk>/tests/<int:test_id>/results/<int:result_id>/delete/', DeleteAcceptanceTestResultsView.as_view(), name='delete_test_result_view'), # Done
+    path('projects/<int:pk>/tests/<int:test_id>/results/<int:result_id>/', TestResultDetailView.as_view(), name='test_result_view'), # Done
     path('projects/<int:pk>/tests/<int:test_id>/', TestDetailView.as_view(), name='test_detail_view'), # Done
-
 ]

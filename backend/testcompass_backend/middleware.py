@@ -2,7 +2,6 @@ from django.utils.deprecation import MiddlewareMixin
 
 class MyCustomMiddleware(MiddlewareMixin):
     def __init__(self, get_response):
-        print("hello")
         self.get_response = get_response
         # Initialization code can go here
 

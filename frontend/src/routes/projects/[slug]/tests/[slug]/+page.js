@@ -1,22 +1,20 @@
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-
 export async function load({ fetch, url, params }) {
-    let get_procedure_url = `${BACKEND_URL}${url.pathname.slice(1)}/`;
-    let get_procedure_results_url = `${BACKEND_URL}${url.pathname.slice(1)}/results/`;
+    let get_test_url = `${BACKEND_URL}${url.pathname.slice(1)}/`;
+    let get_test_results_url = `${BACKEND_URL}${url.pathname.slice(1)}/results/`;
 
-    let procedure = await getProcedure(fetch, get_procedure_url);
-    let procedureResults = await getProcedureResults(fetch, get_procedure_results_url);
+    let test = await getTest(fetch, get_test_url);
+    let testResults = await getTestResults(fetch, get_test_results_url);
 
     return {
         slug: params.slug,
-        procedure: procedure,
-        procedureResults: procedureResults,
+        test: test,
+        testResults: testResults,
     }
 }
 
-
-async function getProcedure(fetch, url) {
+async function getTest(fetch, url) {
     try {
         const response = await fetch(url, {
             method: 'GET',
@@ -32,7 +30,7 @@ async function getProcedure(fetch, url) {
     }
 }
 
-async function getProcedureResults(fetch, url) {
+async function getTestResults(fetch, url) {
     try {
         const response = await fetch(url, {
             method: 'GET',
