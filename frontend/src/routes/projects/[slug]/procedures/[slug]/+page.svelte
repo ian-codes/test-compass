@@ -19,10 +19,15 @@
                     {data.slug}
                 </span>
             </span>
-            <p class="text-center mt-10">
-                {procedure.description}
-            </p>
 
+            <div class="flex flex-col gap-10">
+                <div class="flex flex-col justify-between items-start">
+                    <span class="font-extralight text-md">Description</span>
+                    <p class="text-xl">
+                        {procedure.description}
+                    </p>
+                </div>
+            </div>
 
             <div class="tap-container mt-24 mb-6 border-b-2
                 {(activeTab == "results" ? "border-purple-300" : "border-orange-300")}
@@ -34,21 +39,22 @@
                     User Acceptance Tests
                 </button>
 
-                <button on:click={() => activeTab = "results"}
+                <!-- <button on:click={() => activeTab = "results"}
                     class="tab results"
                     class:activeTab={activeTab == "results"}>
                     Test Procedure Results
-                </button>
+                </button> -->
             </div>
 
             <UatList
+                buttonEnabled={false}
                 uats={tests}
                 bind:activeTab={activeTab} />
 
-            <ProcedureResultList 
+            <!-- <ProcedureResultList 
                 slug={data.slug} 
                 procedureResults={procedureResults}
-                bind:activeTab={activeTab} />
+                bind:activeTab={activeTab} /> -->
         </section>
     </div>
 {/if}

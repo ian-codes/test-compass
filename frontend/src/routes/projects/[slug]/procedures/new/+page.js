@@ -4,6 +4,7 @@ export async function load({ fetch, params }) {
     let get_uats_url = `${BACKEND_URL}projects/${params.slug}/tests/`;
     let uats = await getUats(fetch, get_uats_url);
 
+    console.log("hello", uats)
     return { 
         slug: params.slug,
         uats: uats

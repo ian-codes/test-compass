@@ -11,6 +11,7 @@
             <h1 class="text-3xl text-center">
                 {project.name}
             </h1>
+            
             <span class="absolute text-sm top-0 right-0 p-4 opacity-60">
                 <span class="select-none">
                     ID:
@@ -19,9 +20,15 @@
                     {project.id}
                 </span>
             </span>
-            <p class="text-center mt-10">
-                {project.description}
-            </p>
+
+            <div class="flex flex-col gap-10">
+                <div class="flex flex-col justify-between items-start">
+                    <span class="font-extralight text-md">Description</span>
+                    <p class="text-xl">
+                        {project.description}
+                    </p>
+                </div>
+            </div>
 
             <div class="tap-container mt-24 mb-6 border-b-2
                 {(activeTab == "procedures" ? "border-purple-300" : "border-orange-300")}
@@ -44,6 +51,7 @@
                 bind:activeTab={activeTab} />
 
             <UatList 
+                buttonEnabled={true}
                 uats={uats} 
                 bind:activeTab={activeTab} />
         </section>

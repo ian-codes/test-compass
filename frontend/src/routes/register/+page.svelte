@@ -63,7 +63,7 @@
                 minlength="8" />
         </div>
 
-        <div>
+        <!-- <div>
             <input 
                 on:change={handleStatusChange}
                 id="isOrganizationManager"
@@ -72,9 +72,9 @@
             <label for="isOrganizationManager">
                 Organization Manager
             </label>
-        </div>
+        </div> -->
 
-        {#if isOrganizationManager}
+        <!-- {#if isOrganizationManager} -->
             <div
                 class:invalid={organization_name[1] == false}
                 class="input-container">
@@ -87,7 +87,7 @@
                     name="organization"              
                     type="text" />
             </div>
-        {/if}
+        <!-- {/if} -->
 
         {#if registrationFailed}
             <p>Failed to register.</p>
@@ -112,7 +112,7 @@
     $: last_name = ["", null]
     $: email = ["", null]
     $: password = ["", null]
-    $: isOrganizationManager = false
+    $: isOrganizationManager = true
     $: organization_name = ["", null]
 
     let registrationFailed = false

@@ -60,16 +60,14 @@
     import { page} from "$app/stores";
     import { goto } from "$app/navigation.js";
 
+    export let data;
+
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-    const currentUrl = $page.url.pathname;
+    const currentUrl = $page.url.pathname.slice(1);
+    let requestUrl = `${BACKEND_URL}${currentUrl}/`;
 
-    const requestUrl = `${BACKEND_URL}${currentUrl.slice(1)}/`;
-
-
-
-    export let data;
-    const back_url = `/projects/${data.slug}`;
+    const back_url = `/`;
 
     let createFailed = false;
 
@@ -89,7 +87,7 @@
             return;
         }
         try {
-            const response = await makeRequest();
+            const response = await makeRequest(requestUrl);
             if (response.ok) {
                 createFailed = false;
                 goto(back_url);
@@ -107,8 +105,8 @@
         return !Object.values(errors).includes(true);
     }
 
-    async function makeRequest() {
-        return await fetch(requestUrl, {
+    async function makeRequest(url) {
+        return await fetch(url, {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(testResult),

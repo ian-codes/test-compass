@@ -5,34 +5,69 @@
         gap-4 w-full m-auto mt-0"
         class:visible={!isLoading}>
 
-        <CardType type="User Acceptance Test" />
+        <section class="flex flex-col gap-4 relative text-center">
+            <CardType type="User Acceptance Test" />
 
-        <section class="flex flex-col gap-4 relative">
-            <h1 class="text-3xl">
-                {test.status}
+            <h1 class="text-3xl mb-10">
+                {test.name}
             </h1>
+
             <span class="absolute text-sm top-0 right-0 p-4 opacity-60">
                 <span class="select-none">
                     ID:
                 </span>
                 <span>
-                    {data.slug}
+                    1
                 </span>
             </span>
-            <p>
-                {test.notes}
-            </p>
+
+            <div class="flex flex-col gap-10">
+                <div class="flex flex-col justify-between items-start">
+                    <span class="font-extralight text-md">Description</span>
+                    <p class="text-xl">
+                        {test.description}
+                    </p>
+                </div>
+    
+                <div class="flex flex-col justify-between items-start">
+                    <span class="font-extralight text-md">Preconditions</span>
+                    <p class="text-xl">
+                        {test.pre_conditions}
+                    </p>
+                </div>
+    
+                <div class="flex flex-col justify-between items-start">
+                    <span class="font-extralight text-md">Steps</span>
+                    <p class="text-xl">
+                        {test.steps}
+                    </p>
+                </div>
+    
+                <div class="flex flex-col justify-between items-start">
+                    <span class="font-extralight text-md">Expected Result</span>
+                    <p class="text-xl">
+                        {test.expected_result}
+                    </p>
+                </div>
+    
+                <div class="flex flex-col justify-between items-start">
+                    <span class="font-extralight text-md">Created by</span>
+                    <p class="text-xl">
+                        {test.creator}
+                    </p>
+                </div>
+            </div>
 
             <div class="tap-container mt-24 mb-6 border-b-2
                 border-orange-300 flex my-10flex-row justify-center">
 
                 <button type="button" on:click={() => {return;}}
-                    class="tab uats activeTab">
+                    class="tab uats bg-orange-300 activeTab">
                     Test Results
                 </button>
             </div>
 
-            <UatResultList uatResults={testResults} />
+            <UatResultList slug={data.slug} uatResults={testResults} />
         </section>
     </div>
 {/if}

@@ -40,37 +40,38 @@
                     class="resize-y h-16 max-h-32"></textarea>
             </div>
 
-            <div class="input-container p-2 outline-1 outline rounded-lg outline-slate-400">
-                <label for="tests" 
-                    class="relative flex flex-row justify-between items-center">
+            {#if tests.length}
+                <div class="input-container p-2 outline-1 outline rounded-lg outline-slate-400">
+                    <label for="tests" 
+                        class="relative flex flex-row justify-between items-center">
 
-                    <button type="button"
-                        class="absolute inset-0 opacity-0" 
-                        on:click={() => showTests = !showTests} />
+                        <button type="button"
+                            class="absolute inset-0 opacity-0" 
+                            on:click={() => showTests = !showTests} />
 
-                    Add User Acceptance Tests
+                        Add User Acceptance Tests
 
-                    <span style="background-image: url('/expand.svg');"
-                        class="inline-block invert dark:invert-0 bg-no-repeat 
-                        bg-center bg-contain w-4 h-4 {(showTests ? "rotate-180" : "")}" />
-                </label>
+                        <span style="background-image: url('/expand.svg');"
+                            class="inline-block invert dark:invert-0 bg-no-repeat 
+                            bg-center bg-contain w-4 h-4 {(showTests ? "rotate-180" : "")}" />
+                    </label>
 
-                <ol name="tests" class="hidden mt-4 flex-col gap-2"
-                    class:show={showTests}>
-                    {#each tests as test}
-                        <li class="relative p-2 bg-slate-300 outline rounded-lg"
-                            class:chosen={chosenTests.includes(test)}>
-                            <button 
-                                type="button" 
-                                class="absolute inset-0 opacity-0" 
-                                on:click={() => handleTestClick(test)}/>
-    
-                            {test.name}
-                        </li>
-                    {/each}
-                </ol>
-            </div>
-
+                    <ol name="tests" class="hidden mt-4 flex-col gap-2"
+                        class:show={showTests}>
+                        {#each tests as test}
+                            <li class="relative p-2 bg-slate-300 outline rounded-lg"
+                                class:chosen={chosenTests.includes(test)}>
+                                <button 
+                                    type="button" 
+                                    class="absolute inset-0 opacity-0" 
+                                    on:click={() => handleTestClick(test)}/>
+        
+                                {test.name}
+                            </li>
+                        {/each}
+                    </ol>
+                </div>
+            {/if}
 
             {#if createFailed}
                 <p>Failed to create test procedure.</p>

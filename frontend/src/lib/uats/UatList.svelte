@@ -5,10 +5,12 @@
     <div class="pb-8 flex flex-row gap-5 justify-between items-center">
         <h2>User Acceptance Tests • {uats.length}</h2>
 
-        <button on:click={() => goto(`${url}/tests/new`)}
-            class="btn !m-0 !w-max inline-block">
-            Add New
-        </button>
+        {#if buttonEnabled}
+            <button on:click={() => goto(`${url}/tests/new`)}
+                class="btn !m-0 !w-max inline-block">
+                Add New
+            </button>
+        {/if}
     </div>
 
     <ol class="flex flex-wrap items-center justify-center gap-y-12 gap-x-4">
@@ -24,6 +26,7 @@
     import UatCard from "./UatCard.svelte";
     export let uats;
     export let activeTab;
+    export let buttonEnabled;
 
     let url = $page.url.pathname;
 
