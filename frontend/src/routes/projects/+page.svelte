@@ -30,12 +30,12 @@
 
 <section class="flex min-h-lvh flex-col gap-5">
     {#if projects}
-        <div class="flex flex-row gap-5 justify-start items-center">
-            <h2>Projects • {projects.length}</h2>
+        <div class="flex flex-row items-center justify-between gap-4 mb-10">
+            <h2 class="m-0">Projects • {projects.length}</h2>
 
             <button on:click={() => goto("/projects/new")}
                 class="btn !m-0 !w-max inline-block">
-                New Project
+                Add New
             </button>
         </div>
 

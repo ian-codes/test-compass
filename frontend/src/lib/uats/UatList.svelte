@@ -1,4 +1,4 @@
-<section id="user-acceptance-tests"
+<div id="user-acceptance-tests"
     class="hidden min-h-lvh flex-col gap-5"
     class:visible={isVisible}>
 
@@ -16,7 +16,7 @@
             <UatCard uat={uat} />
         {/each}
     </ol>
-</section>
+</div>
 
 <script>
     import { page } from "$app/stores";

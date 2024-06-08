@@ -34,7 +34,7 @@
     let email = "";
     let invalid = false;
     let hasFailed;
-    $: submitText = hasFailed ? "Failed to send invite." : "Invite sent!";
+    $: submitText = "";
 
     async function handleInvite() {
         if (!email.trim()) {
@@ -56,6 +56,7 @@
             } else {
                 hasFailed = true;
                 invalid = false;
+                submitText = await response.text();
             }
         }
         catch {

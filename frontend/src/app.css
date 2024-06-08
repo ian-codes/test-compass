@@ -13,13 +13,13 @@ section {
     outline-1 outline
 }
 input, textarea {
-    @apply p-2 rounded-md
+    @apply p-2 rounded-md outline outline-1 outline-slate-300
 }
 .input-container {
     @apply flex flex-col gap-1 w-full
 }
 .invalid {
-    @apply outline outline-red-400 outline-2
+    @apply outline !outline-red-400 outline-2
 }
 .btn {
     @apply dark:text-black shadow-md font-bold text-white hover:text-primary hover:bg-white hover:scale-105
@@ -32,17 +32,14 @@ input, textarea {
 .icon {
     @apply bg-center bg-no-repeat bg-contain
 }
-.visible, .visible-flex {
+
+.visible {
     animation: appear forwards 1s ease;
 }
-.visible {
-    display: block !important;
-}
-.visible-flex {
-    display: flex !important;
-}
+
 @keyframes appear {
     0% {
+        display: block !important;
         opacity: 0;
     }
     100% {

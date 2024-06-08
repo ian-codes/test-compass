@@ -14,20 +14,15 @@
             <InviteComponent /> <!-- only show if user is manager -->
         </section>
 
-        <!-- <section>
-            <h2>Members • {members.length}</h2>
-
-            <div class="overflow-scroll px-2 py-10">
-                <ol class="flex flex-row gap-2 w-max">
-                    {#each members as member}
-                        <MemberCard member={member} />
-                    {/each}
-                </ol>
-            </div>
-        </section> -->
-
         <section id="projects" class="flex flex-col gap-5">
-            <h2 class="m-0">Projects • {projects.length}</h2>
+            <div class="flex flex-row items-center justify-between gap-4 mb-10">
+                <h2 class="m-0">Projects • {projects.length}</h2>
+
+                <button on:click={() => goto("/projects/new")}
+                    class="btn !m-0 !w-max inline-block">
+                    Add New
+                </button>
+            </div>
 
             <ol class="flex flex-wrap items-center justify-center gap-4">
                 {#each projects as project}
@@ -39,6 +34,7 @@
 {/if}
 
 <script>
+    import { goto } from "$app/navigation";
     import InviteComponent from "$lib/organization/InviteComponent.svelte";
     import ProjectCard from "$lib/projects/ProjectCard.svelte";
 

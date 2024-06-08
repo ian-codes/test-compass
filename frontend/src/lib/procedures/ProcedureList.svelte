@@ -1,4 +1,4 @@
-<section id="procedures"
+<div id="procedures"
     class="hidden min-h-lvh flex-col gap-5"
     class:visible={isVisible}>
 
@@ -16,7 +16,7 @@
             <ProcedureCard procedure={procedure} />
         {/each}
     </ol>
-</section>
+</div>
 
 <script>
     import { page } from "$app/stores";
