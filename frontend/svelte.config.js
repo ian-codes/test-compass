@@ -8,7 +8,8 @@ const config = {
 			dir: './'
 		},
 		alias: {
-			$models: "src/models"
+			$models: "src/models",
+			$stores: "src/stores"
 		},
 		adapter: adapter(),
 		paths: {

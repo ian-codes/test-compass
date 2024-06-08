@@ -3,6 +3,7 @@ const GET_PROJECTS_URL = `${BACKEND_URL}organizations/projects/`;
 const GET_USER_URL = `${BACKEND_URL}organizations/user/`;
 const GET_ORG_URL = `${BACKEND_URL}organizations/org/`;
 
+
 export async function load({ fetch }) {
     let user = await getUser(fetch);
     let organization = await getOrganization(fetch);

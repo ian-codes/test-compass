@@ -72,7 +72,7 @@ class TestsView(View):
         """
             Checks wether user (:model:`auth.User`) is associated with project (:model:`user_tests.Project`) with id passed in URL
         """
-        if not user in project.user_list.all():
+        if not user in project.user_list.all() and profile.organization != project.organization:
             return HttpResponse(
                 "Unauthorized", status=403
             )        
