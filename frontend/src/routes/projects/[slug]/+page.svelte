@@ -66,12 +66,6 @@
 
 
 <style lang="postcss">
-    .activeTab {
-        @apply bg-slate-300 dark:bg-slate-500 dark:text-black;
-    }
-    .tab {
-        @apply px-4 py-2 rounded-t-lg;
-    }
     .activeTab.procedures {
         @apply bg-purple-300
     }
