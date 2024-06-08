@@ -57,7 +57,7 @@
 <script>
     import { goto } from "$app/navigation.js";
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-    const CREATE_PROJECT_URL = `${BACKEND_URL}organizations/projects/create/`;
+    const CREATE_PROJECT_URL = `${BACKEND_URL}projects/create/`;
     let createFailed = false;
 
     let project = {

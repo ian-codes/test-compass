@@ -101,7 +101,7 @@
     }
 
     async function makeCreateProcedurePostRequest() {
-        const url = `${BACKEND_URL}organizations/projects/${data.slug}/testprocedures/create/`;
+        const url = `${BACKEND_URL}projects/${data.slug}/procedures/create/`;
         return await fetch(url, {
             method: 'POST',
             headers: { "Content-Type": "application/json" },

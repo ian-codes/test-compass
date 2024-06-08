@@ -5,7 +5,7 @@
     <div class="pb-8 flex flex-row gap-5 justify-between items-center">
         <h2>User Acceptance Tests • {uats.length}</h2>
 
-        <button on:click={() => goto(`${slug}/new-user-acceptance-test`)}
+        <button on:click={() => goto(`${url}/tests/new`)}
             class="btn !m-0 !w-max inline-block">
             Add New
         </button>
@@ -19,11 +19,13 @@
 </section>
 
 <script>
+    import { page } from "$app/stores";
     import { goto } from "$app/navigation.js";
     import UatCard from "./UatCard.svelte";
     export let uats;
     export let activeTab;
-    export let slug;
+
+    let url = $page.url.pathname;
 
     $: isVisible = activeTab == "uats";
 </script>

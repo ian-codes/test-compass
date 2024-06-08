@@ -34,7 +34,7 @@
     let project_delete_url;
 
     onMount(() => {
-        project_delete_url = `${BACKEND_URL}organizations/projects/${project.id}/delete/`;
+        project_delete_url = `${BACKEND_URL}projects/${project.id}/delete/`;
     });
 
     let hasFailed = false;

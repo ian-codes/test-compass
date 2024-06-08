@@ -118,7 +118,7 @@ class TestProcedureDetailView(View):
                 "Project with pk does not exist", status=400
             )        
   
-        if not user in project.user_list.all():
+        if not user in project.user_list.all() and profile.organization != project.organization:
             return HttpResponse(
                 "Unauthorized", status=403
             )
@@ -197,7 +197,7 @@ class TestProcedureResultListView(View):
                 "Project with pk does not exist", status=400
             )        
         
-        if not user in project.user_list.all():
+        if not user in project.user_list.all() and profile.organization != project.organization:
             return HttpResponse(
                 "Unauthorized", status=403
             )
@@ -253,7 +253,7 @@ class TestProcedureResultDetailView(View):
                 "Project with pk does not exist", status=400
             )        
         
-        if not user in project.user_list.all():
+        if not user in project.user_list.all() and profile.organization != project.organization:
             return HttpResponse(
                 "Unauthorized", status=403
             )
@@ -329,7 +329,7 @@ class TestResultDetailView(View):
                 "Project with pk does not exist", status=400
             )        
         
-        if not user in project.user_list.all():
+        if not user in project.user_list.all() and profile.organization != project.organization:
             return HttpResponse(
                 "Unauthorized", status=403
             )
@@ -808,7 +808,7 @@ class CreateTestProcedureResultView(View):
                 "Project with pk does not exist", status=400
             )        
         
-        if not user in project.user_list.all():
+        if not user in project.user_list.all() and profile.organization != project.organization:
             return HttpResponse(
                 "Unauthorized", status=403
             )
@@ -882,7 +882,7 @@ class CreateTestResultView(View):
                 "Project with pk does not exist", status=400
             )        
         
-        if not user in project.user_list.all():
+        if not user in project.user_list.all() and profile.organization != project.organization:
             return HttpResponse(
                 "Unauthorized", status=403
             )
@@ -946,7 +946,7 @@ class DeleteProjectView(View):
                 "Project with pk does not exist", status=400
             )
 
-        if not user in project.user_list.all():
+        if not user in project.user_list.all() and profile.organization != project.organization:
             return HttpResponse(
                 "Unauthorized", status=403
             )
@@ -998,7 +998,7 @@ class DeleteTestView(View):
                 "Project with pk does not exist", status=400
             )
 
-        if not user in project.user_list.all():
+        if not user in project.user_list.all() and profile.organization != project.organization:
             return HttpResponse(
                 "Unauthorized", status=403
             )
@@ -1055,7 +1055,7 @@ class DeleteTestProcedureView(View):
                 "Project with pk does not exist", status=400
             )
 
-        if not user in project.user_list.all():
+        if not user in project.user_list.all() and profile.organization != project.organization:
             return HttpResponse(
                 "Unauthorized", status=403
             )
@@ -1092,7 +1092,7 @@ class DeleteTestProcedureResultsView(View):
                 "Project with pk does not exist", status=400
             )
 
-        if not user in project.user_list.all():
+        if not user in project.user_list.all() and profile.organization != project.organization:
             return HttpResponse(
                 "Unauthorized", status=403
             )
@@ -1129,7 +1129,7 @@ class DeleteAcceptanceTestResultsView(View):
                 "Project with pk does not exist", status=400
             )
 
-        if not user in project.user_list.all():
+        if not user in project.user_list.all() and profile.organization != project.organization:
             return HttpResponse(
                 "Unauthorized", status=403
             )

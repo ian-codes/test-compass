@@ -1,6 +1,6 @@
 <script>
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-    const GET_USER_URL = `${BACKEND_URL}organizations/user/`;
+    const GET_USER_URL = `${BACKEND_URL}user/`;
 
     import "../app.css";
     import Header from "$lib/global/Header.svelte";

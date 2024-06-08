@@ -5,7 +5,7 @@
     <div class="pb-8 flex flex-row gap-5 justify-between items-center">
         <h2>Test Procedures • {procedures.length}</h2>
 
-        <button on:click={() => goto(`${slug}/new-test-procedure`)}
+        <button on:click={() => goto(`${url}/procedures/new`)}
             class="btn !m-0 !w-max inline-block">
             Add New
         </button>
@@ -19,11 +19,13 @@
 </section>
 
 <script>
+    import { page } from "$app/stores";
     import { goto } from "$app/navigation.js";
     import ProcedureCard from "./ProcedureCard.svelte";
     export let procedures;
     export let activeTab;
-    export let slug;
+
+    let url = $page.url.pathname;
 
     $: isVisible = activeTab == "procedures";
 </script>

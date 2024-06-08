@@ -36,12 +36,10 @@
         </section>
 
         <ProcedureList 
-            slug={data.slug} 
             procedures={procedures} 
             bind:activeTab={activeTab} />
 
         <UatList 
-            slug={data.slug} 
             uats={uats} 
             bind:activeTab={activeTab} />
     </div>
