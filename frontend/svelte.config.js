@@ -11,10 +11,7 @@ const config = {
 			$models: "src/models",
 			$stores: "src/stores"
 		},
-		adapter: adapter(),
-		paths: {
-            base: process.env.NODE_ENV === 'production' ? '/test-compass' : '',
-        }
+		adapter: adapter()
 	},
 	preprocess: vitePreprocess()
 };
