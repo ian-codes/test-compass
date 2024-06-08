@@ -34,7 +34,6 @@
                 id="notes" 
                 name="notes"
                 type="text"
-                minlength="10"
                 class:invalid={errors.notes}
                 class="resize-y h-16 max-h-32"></textarea>
         </div>

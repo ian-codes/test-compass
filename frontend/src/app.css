@@ -32,12 +32,17 @@ input, textarea {
 .icon {
     @apply bg-center bg-no-repeat bg-contain
 }
-.visible {
+.visible, .visible-flex {
     animation: appear forwards 1s ease;
+}
+.visible {
+    display: block !important;
+}
+.visible-flex {
+    display: flex !important;
 }
 @keyframes appear {
     0% {
-        display: block !important;
         opacity: 0;
     }
     100% {

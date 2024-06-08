@@ -1,74 +1,126 @@
-<section class="dark:bg-slate-700  flex flex-col items-center gap-5 
-    py-12 bg-slate-200">
+{#if isLoading}
+    <h1>Loading...</h1>
+{:else}
+    <section class="dark:bg-slate-700  flex flex-col items-center gap-5 
+        py-12 bg-slate-200">
 
-    <h2 class="text-center text-xl font-mono font-extralight">
-        New Test Procedure
-    </h2>
+        <h2 class="text-center text-xl font-mono font-extralight">
+            New Test Procedure
+        </h2>
 
-    <form on:submit|preventDefault={handleSubmit}
-        class="flex max-w-sm w-full gap-2 flex-col items-center justify-center">
+        <form on:submit|preventDefault={handleSubmit}
+            class="flex max-w-sm w-full gap-2 flex-col items-center justify-center">
 
-        <div 
-            class="input-container">
-            <label for="name">
-                Name
-            </label>
+            <div class="input-container">
+                <label for="name">
+                    Name
+                </label>
 
-            <input 
-                bind:value={procedure.name}
-                id="name"
-                name="name"
-                type="text"
-                minlength="3"
-                class:invalid={errors.name} />
-        </div>
+                <input 
+                    bind:value={procedure.name}
+                    id="name"
+                    name="name"
+                    type="text"
+                    minlength="3"
+                    class:invalid={errors.name} />
+            </div>
 
-        <div 
-            class="input-container">
-            <label for="description">
-                Description
-            </label>
+            <div class="input-container">
+                <label for="description">
+                    Description
+                </label>
 
-            <textarea 
-                bind:value={procedure.description}
-                id="description" 
-                name="description"
-                type="text"
-                minlength="10"
-                class:invalid={errors.description}
-                class="resize-y h-16 max-h-32"></textarea>
-        </div>
+                <textarea 
+                    bind:value={procedure.description}
+                    id="description" 
+                    name="description"
+                    type="text"
+                    minlength="10"
+                    class:invalid={errors.description}
+                    class="resize-y h-16 max-h-32"></textarea>
+            </div>
 
-        {#if createFailed}
-            <p>Failed to create test procedure.</p>
-        {/if}
+            <div class="input-container p-2 outline-1 outline rounded-lg outline-slate-400">
+                <label for="tests" 
+                    class="relative flex flex-row justify-between items-center">
 
-        <button type="submit" class="btn">
-            Create
-        </button>
+                    <button type="button"
+                        class="absolute inset-0 opacity-0" 
+                        on:click={() => showTests = !showTests} />
 
-        <button 
-            on:click={() => goto(back_url)}
-            type="reset" 
-            class="btn-secondary">
-            Discard
-        </button>
-    </form>
-</section>
+                    Add User Acceptance Tests
 
+                    <span style="background-image: url('/expand.svg');"
+                        class="inline-block invert dark:invert-0 bg-no-repeat 
+                        bg-center bg-contain w-4 h-4 {(showTests ? "rotate-180" : "")}" />
+                </label>
+
+                <ol name="tests" class="hidden mt-4 flex-col gap-2"
+                    class:show={showTests}>
+                    {#each tests as test}
+                        <li class="relative p-2 bg-slate-300 outline rounded-lg"
+                            class:chosen={chosenTests.includes(test)}>
+                            <button 
+                                type="button" 
+                                class="absolute inset-0 opacity-0" 
+                                on:click={() => handleTestClick(test)}/>
+    
+                            {test.name}
+                        </li>
+                    {/each}
+                </ol>
+            </div>
+
+
+            {#if createFailed}
+                <p>Failed to create test procedure.</p>
+            {/if}
+
+            <button type="submit" class="btn">
+                Create
+            </button>
+
+            <button 
+                on:click={() => goto(back_url)}
+                type="reset" 
+                class="btn-secondary">
+                Discard
+            </button>
+        </form>
+    </section>
+{/if}
 
 <script>
     import { goto } from "$app/navigation.js";
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
     export let data;
+
+    $: showTests = false;
+
+    function handleTestClick(test) {
+        const index = chosenTests.indexOf(test);
+        if (index !== -1) {
+            chosenTests.splice(index, 1);
+        } else {
+            chosenTests.push(test);
+        }
+        chosenTests = chosenTests.slice(); // Reassign to trigger reactivity
+    }
+
+    let chosenTests = [];
+
+    let tests = data.uats;
+
     const back_url = `/projects/${data.slug}`;
+
+    $: isLoading = !tests;
 
     let createFailed = false;
 
     let procedure = {
         name: "",
-        description: ""
+        description: "",
     }
 
     let errors = {
@@ -101,7 +153,11 @@
     }
 
     async function makeCreateProcedurePostRequest() {
-        const url = `${BACKEND_URL}projects/${data.slug}/procedures/create/`;
+        procedure.acceptance_tests = chosenTests.map(test => test.id);
+
+        const url = `${BACKEND_URL}projects/${data.slug}/procedures/new/`;
+
+        console.log(procedure)
         return await fetch(url, {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
@@ -110,3 +166,13 @@
         })
     }
 </script>
+
+
+<style lang="postcss">
+    .chosen {
+        @apply bg-green-200;
+    }
+    .show {
+        display: flex !important;
+    }
+</style>

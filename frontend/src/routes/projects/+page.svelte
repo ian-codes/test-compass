@@ -33,7 +33,7 @@
         <div class="flex flex-row gap-5 justify-start items-center">
             <h2>Projects • {projects.length}</h2>
 
-            <button on:click={() => goto("/projects/create")}
+            <button on:click={() => goto("/projects/new")}
                 class="btn !m-0 !w-max inline-block">
                 New Project
             </button>
