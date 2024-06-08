@@ -83,6 +83,69 @@ class TestsView(View):
         return JsonResponse(test_list, safe=False)
 
 
+class TestResultsView(View):
+    """
+    A list of acceptancetests :model:`user_tests.UserAcceptanceTest` as JSON.
+
+    **Return-Value**
+
+    ``test_list``
+        An list of :model:`user_tests.UserAcceptanceTest` instances.
+
+    **Parameters:**
+    - 'pk': Primary key of project of which the tests should be returned
+    - 'test_id': Primary key of test of which the test results should be returned
+
+    """
+    def get(self, request, *args, **kwargs):
+        """
+            Gets JWT-Token from request cookies and checks if they exist in the database
+        """
+        token = Token.objects.get(key=request.COOKIES.get('auth_token'))
+        user=token.user
+        profile = UserProfile.objects.get(user=user)
+
+        """
+            Checks wether user is part of an organization (:model:`organizations.Organization)
+        """
+        if not profile.organization:
+            return HttpResponse(
+                "This user has no organization", status=400
+            )
+        project = None
+        """
+            Checks wether project (:model:`user_tests.Project`) with id passed in URL exists
+        """
+        try:    
+            project = Project.objects.get(pk=kwargs.get('pk'))        
+
+        except Project.DoesNotExist:
+          return HttpResponse(
+                "Project with pk does not exist", status=400
+            )        
+        """
+            Checks wether user (:model:`auth.User`) is associated with project (:model:`user_tests.Project`) with id passed in URL
+        """
+        if not user in project.user_list.all() and profile.organization != project.organization:
+            return HttpResponse(
+                "Unauthorized", status=403
+            )       
+        """
+            Checks wether test (:model:`user_tests.UserAcceptanceTest`) exists
+        """
+        try:    
+            test = UserAcceptanceTest.objects.get(pk=kwargs.get('test_id'))        
+
+        except UserAcceptanceTest.DoesNotExist:
+          return HttpResponse(
+                "Test with this id does not exist", status=400
+            )     
+    
+        test_results = UserAcceptanceTestResult.objects.filter(acceptance_test=test)
+        test_list = list(test_results.values())
+
+        return JsonResponse(test_list, safe=False)
+
 class TestProcedureDetailView(View):
     """
     A certain testprocedure (:model:`user_tests.TestProcedure`) with associated tests (:model:`user_tests.UserAcceptanceTest`) .

@@ -4,6 +4,19 @@
 
 <div>
 <h2>
+Hosting
+</h2>
+- The frontend is hosted on https://test-compass-pied.vercel.app/
+- The backend is hosted on https://test-compass.refugium-romontberg.ch/
+ 
+
+<h2>
+Django Documentation
+</h2>
+Each function and model contains documentation about
+the purpose, response type and more. It can be found in the apps views.py, urls.py and models.py.
+
+<h2>
 Django Setup
 </h2>
 
