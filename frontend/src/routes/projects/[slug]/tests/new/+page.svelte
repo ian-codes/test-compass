@@ -45,12 +45,12 @@
             </label>
 
             <textarea 
-                bind:value={uat.preconditions}
+                bind:value={uat.pre_conditions}
                 id="preconditions" 
                 name="preconditions"
                 type="text"
                 minlength="10"
-                class:invalid={errors.preconditions}
+                class:invalid={errors.pre_conditions}
                 class="resize-y h-16 max-h-32"></textarea>
         </div>
 
@@ -85,7 +85,7 @@
         </div>
 
         {#if createFailed}
-            <p>Failed to create test procedure.</p>
+            <p>Failed to create test.</p>
         {/if}
 
         <button type="submit" class="btn">
@@ -115,14 +115,14 @@
     let uat = {
         name: "",
         description: "",
-        preconditions: "",
+        pre_conditions: "",
         expected_result: ""
     }
 
     let errors = {
         name: false,
         description: false,
-        preconditions: false,
+        pre_conditions: false,
         expected_result: false
     }
 

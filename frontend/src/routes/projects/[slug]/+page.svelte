@@ -34,25 +34,26 @@
                 {(activeTab == "procedures" ? "border-purple-300" : "border-orange-300")}
                 flex my-10flex-row justify-center">
 
-                <button on:click={() => activeTab = "procedures"}
-                    class="tab procedures"
-                    class:activeTab={activeTab == "procedures"}>
-                    Test Procedures
-                </button>
                 <button on:click={() => activeTab = "uats"}
                     class="tab uats"
                     class:activeTab={activeTab == "uats"}>
                     User Acceptance Tests
                 </button>
-            </div>
 
-            <ProcedureList 
-                procedures={procedures} 
-                bind:activeTab={activeTab} />
+                <button on:click={() => activeTab = "procedures"}
+                    class="tab procedures"
+                    class:activeTab={activeTab == "procedures"}>
+                    Test Procedures
+                </button>
+            </div>
 
             <UatList 
                 buttonEnabled={true}
                 uats={uats} 
+                bind:activeTab={activeTab} />
+
+            <ProcedureList 
+                procedures={procedures} 
                 bind:activeTab={activeTab} />
         </section>
     </div>
@@ -69,7 +70,7 @@
     let procedures = data.procedures;
     let uats = data.uats;
 
-    let activeTab = "procedures";
+    let activeTab = "uats";
 
     $: isLoading = !project && !procedures && !uats
 </script>
