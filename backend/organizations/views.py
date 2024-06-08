@@ -273,7 +273,7 @@ class UserInviteView(View):
         """
         subject = f"Einladung zu Organisation {invite_organization.name}"
         c = {
-                            'invite_link': f"http://localhost:8000/organization/{invite_organization.pk}/invite/{generated_hash}",
+                            'invite_link': f"https://test-compass.refugium-romontberg.ch/organization/{invite_organization.pk}/invite/{generated_hash}",
                             'organization': invite_organization,
                             "user": invited_user,
             }
@@ -321,4 +321,4 @@ class OrgInvitationView(View):
             return HttpResponse(msg, status=400)
         
             
-        return HttpResponseRedirect("https://google.com/")
+        return HttpResponseRedirect("https://test-compass-pied.vercel.app/")
