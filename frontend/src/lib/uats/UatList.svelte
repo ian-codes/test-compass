@@ -11,7 +11,7 @@
         </button>
     </div>
 
-    <ol class="flex flex-wrap items-center justify-center gap-4">
+    <ol class="flex flex-wrap items-center justify-center gap-y-12 gap-x-4">
         {#each uats as uat}
             <UatCard uat={uat} />
         {/each}
