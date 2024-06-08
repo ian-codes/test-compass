@@ -69,7 +69,7 @@ CORS_ALLOW_HEADERS = [
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
-    'https://test-compass-pied.vercel.app/',
+    'https://test-compass-pied.vercel.app',
     'http://localhost:5173'
 ]
 
