@@ -34,7 +34,6 @@
     let project_delete_url;
 
     onMount(() => {
-        console.log(project)
         project_delete_url = `${BACKEND_URL}organizations/projects/${project.id}/delete/`;
     });
 

@@ -21,8 +21,6 @@
     })
 
     async function checkAuth() {
-        console.log($page.url.pathname)
-        console.log($loggedIn)
         const response = await fetch(GET_USER_URL, {
             method: 'GET',
             credentials: 'include'

@@ -89,7 +89,6 @@
     }
 
     function areInputsValid() {
-        console.log(project.name.trim());
         errors.name = !project.name.trim();
         errors.description = !project.description.trim();
         return !Object.values(errors).includes(true);
