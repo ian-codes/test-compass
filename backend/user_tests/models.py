@@ -91,7 +91,7 @@ class TestProcedureResult(models.Model):
     Stores the result of a certain useracceptancetest (:model:`user_tests.UserAcceptanceTest`) and is assosciated to a procedure (:model:`user_tests.TestProcedureResult`)
 """
 class UserAcceptanceTestResult(models.Model):
-    test_procedure_result = models.ForeignKey(TestProcedureResult, on_delete=models.CASCADE, verbose_name="Testprozedurresultat", null=False, blank=False)
+    test_procedure_result = models.ForeignKey(TestProcedureResult, on_delete=models.SET_NULL, verbose_name="Testprozedurresultat", null=True, blank=True)
 
     created_at = models.DateTimeField(default=timezone.now, verbose_name="Erstellt am")
     acceptance_test = models.ForeignKey(UserAcceptanceTest, on_delete=models.CASCADE, verbose_name="Akzeptanztest", null=False, blank=False)

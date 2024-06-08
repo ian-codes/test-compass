@@ -296,6 +296,66 @@ class TestProcedureResultDetailView(View):
         return JsonResponse(test_procedure_json, safe=False)
 
 
+class TestResultDetailView(View):
+    """
+    Details of testprocedure result (:model:`user_tests.TestProcedureResult`) with associated testresults (:model:`user_tests.UserAcceptanceTest`) .
+
+    **Return-Value**
+
+    ``test_result_json``
+        A JSON with UserAcceptanceTestResult (:model:`user_tests.UserAcceptanceTestResult`),.
+
+    **Parameters:**
+    - 'pk': Primary key of project of which the procedure result should be returned
+    - 'result_id': Primary key of procedure result to get
+    """
+    def get(self, request, *args, **kwargs):
+        """
+            Repetitive Code to check for permission, check doc of TestView to gain more information
+        """
+        token = Token.objects.get(key=request.COOKIES.get('auth_token'))
+        user=token.user
+        profile = UserProfile.objects.get(user=user)
+        if not profile.organization:
+            return HttpResponse(
+                "This user has no organization", status=400
+            )
+        project = None
+        try:    
+            project = Project.objects.get(pk=kwargs.get('pk'))        
+
+        except Project.DoesNotExist:
+          return HttpResponse(
+                "Project with pk does not exist", status=400
+            )        
+        
+        if not user in project.user_list.all():
+            return HttpResponse(
+                "Unauthorized", status=403
+            )
+
+        try:
+            test_result = UserAcceptanceTestResult.objects.get(pk=kwargs.get('result_id'))
+        except TestProcedureResult.DoesNotExist:
+            return HttpResponse(
+                "No procedure result found", status=400
+            )
+             
+        test_result_json = {
+            'created_at': test_result.created_at,
+            'status': test_result.status,
+            'notes': test_result.notes,
+            'acceptance_test': {
+                    'test_name':  test_result.acceptance_test.name,
+                    'test_description':  test_result.acceptance_test.description,
+                    'test_pre_conditions':  test_result.acceptance_test.pre_conditions,
+                    'test_expected_result':  test_result.acceptance_test.expected_result,
+                    'test_expected_steps':  test_result.acceptance_test.steps,
+            }  
+
+        }
+
+        return JsonResponse(test_result_json, safe=False)
 
 
 class TestProceduresView(View):
@@ -775,6 +835,76 @@ class CreateTestProcedureResultView(View):
         return HttpResponse(
                 "created", status=201
         )
+    
+class CreateTestResultView(View):
+    """
+        Checks for csrf_token to prevent cross-site-request-forgery
+    """
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    """
+    Endpoint to create TestProcedure result (:model:`user_tests.TestProcedureResult`)
+
+    **Body**
+            {
+                "status": <str:status>,
+                "notes": <str:notes>
+            }
+
+    **Return-Value**
+
+    ``Status: 201 - Created``
+
+    **Parameters:**
+    - 'auth_token': JWT-Authorization-Token passed as http-only-cookie
+    - 'pk': Primary key of project in which procedure result should be created
+    - 'test_id': Primary key of test for which the result is
+
+    """
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+
+        token = Token.objects.get(key=request.COOKIES.get('auth_token'))
+        user=token.user
+        profile = UserProfile.objects.get(user=user)
+        if not profile.organization:
+            return HttpResponse(
+                "This user has no organization", status=400
+            )
+        project = None
+        try:    
+            project = Project.objects.get(pk=kwargs.get('pk'))        
+
+        except Project.DoesNotExist:
+          return HttpResponse(
+                "Project with pk does not exist", status=400
+            )        
+        
+        if not user in project.user_list.all():
+            return HttpResponse(
+                "Unauthorized", status=403
+            )
+        try:
+            acceptance_test = UserAcceptanceTest.objects.get(id=kwargs.get('test_id'), project=project)
+        except UserAcceptanceTest.DoesNotExist:
+            return HttpResponse(
+                "Test does not exist or is not in your project", status=400
+            )
+        try:
+            result = UserAcceptanceTestResult.objects.create(
+                status=data.get('status'),
+                notes=data.get('notes'),
+                acceptance_test = acceptance_test
+            )
+        except:
+            return HttpResponse(
+                "Something went wrong", status=400
+            )
+        return HttpResponse(
+                "created", status=201
+            )
 
 # Delete Views
 class DeleteProjectView(View):

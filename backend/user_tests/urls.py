@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import include, path, re_path
-from .views import OrganizationView, ProjectView, UserView, TestsView, TestProceduresView, TestProcedureDetailView, TestProcedureResultListView, TestProcedureResultDetailView, UsersView, CreateProjectView, DeleteProjectView, DeleteTestView, CreateTestView, CreateTestProcedureView, CreateTestProcedureResultView, ProjectsView, DeleteTestProcedureView, DeleteTestProcedureResultsView, DeleteAcceptanceTestResultsView
+from .views import OrganizationView, ProjectView, UserView, TestsView, TestProceduresView, TestProcedureDetailView, TestProcedureResultListView, TestProcedureResultDetailView, UsersView, CreateProjectView, DeleteProjectView, DeleteTestView, CreateTestView, CreateTestProcedureView, CreateTestProcedureResultView, ProjectsView, DeleteTestProcedureView, DeleteTestProcedureResultsView, DeleteAcceptanceTestResultsView, CreateTestResultView,TestResultDetailView
 
 
 """
@@ -28,6 +28,7 @@ urlpatterns = [
     path('projects/<int:pk>/tests/create/', CreateTestView.as_view(), name='create_test_view'),# Done
     path('projects/<int:pk>/testprocedures/create/', CreateTestProcedureView.as_view(), name='create_test_procedure_view'), # Done
     path('projects/<int:pk>/testprocedures/<int:procedure_id>/create/', CreateTestProcedureResultView.as_view(), name='create_test_procedure_result_view'), # Done
+    path('projects/<int:pk>/tests/<int:test_id>/testresults/create/', CreateTestResultView.as_view(), name='create_test_procedure_result_view'), # Done
 
 
     path('projects/<int:pk>/delete', DeleteProjectView.as_view(), name='delete_project_view'), # Done
@@ -36,5 +37,6 @@ urlpatterns = [
     path('projects/<int:pk>/testprocedures/<int:procedure_id>/delete/', DeleteTestProcedureView.as_view(), name='delete_test_procedure_view'), # Done
     path('projects/<int:pk>/testprocedureresults/<int:result_id>/delete/', DeleteTestProcedureResultsView.as_view(), name='delete_test_procedure_result_view'), # Done
     path('projects/<int:pk>/testresults/<int:result_id>/delete/', DeleteAcceptanceTestResultsView.as_view(), name='delete_test_result_view'), # Done
+    path('projects/<int:pk>/testresults/<int:result_id>/', TestResultDetailView.as_view(), name='test_result_view'), # Done
 
 ]
