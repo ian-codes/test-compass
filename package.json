@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "@sveltejs/adapter-vercel": "^5.3.1",
-    "nodemailer": "^6.9.13"
-  }
-}
