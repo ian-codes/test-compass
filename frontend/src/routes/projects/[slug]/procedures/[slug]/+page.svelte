@@ -5,10 +5,10 @@
         gap-4 w-full m-auto mt-0"
         class:visible={!isLoading}>
 
-        <CardType type="Test Procedure" />
+        <section class="flex flex-col gap-4 relative overflow-hidden">
+            <CardType type="Test Procedure" />
 
-        <section class="flex flex-col gap-4 relative">
-            <h1 class="text-3xl">
+            <h1 class="text-3xl text-center">
                 {procedure.name}
             </h1>
             <span class="absolute text-sm top-0 right-0 p-4 opacity-60">
@@ -19,7 +19,7 @@
                     {data.slug}
                 </span>
             </span>
-            <p>
+            <p class="text-center mt-10">
                 {procedure.description}
             </p>
 

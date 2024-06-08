@@ -1,16 +1,16 @@
 {#if isLoading}
     <h1 class="text-2xl">Loading...</h1>
 {:else}
-    <div class="flex flex-col justify-center items-center 
-        gap-4 w-full m-auto"
+    <div class="flex flex-col justify-start items-center 
+        gap-4 w-full m-auto mt-0"
         class:visible={!isLoading}>
 
         <h1 class="text-3xl">
             Hey, {user.first_name}.
         </h1>
 
-        <section class="flex flex-col gap-4">
-            <h2>Organization • {organization?.name ?? "Loading..."}</h2>
+        <section class="flex flex-col gap-4 mt-4">
+            <h2 class="mb-5">Organization • {organization?.name ?? "Loading..."}</h2>
             <InviteComponent /> <!-- only show if user is manager -->
         </section>
 
