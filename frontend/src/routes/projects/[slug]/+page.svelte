@@ -5,8 +5,10 @@
         gap-4 w-full m-auto"
         class:visible={!isLoading}>
 
-        <section class="flex flex-col gap-4 relative">
-            <h1 class="text-3xl">
+        <section class="flex flex-col gap-4 overflow-hidden relative">
+            <CardType type="Project" />
+
+            <h1 class="text-3xl text-center">
                 {project.name}
             </h1>
             <span class="absolute text-sm top-0 right-0 p-4 opacity-60">
@@ -17,7 +19,7 @@
                     {project.id}
                 </span>
             </span>
-            <p>
+            <p class="text-center mt-10">
                 {project.description}
             </p>
 
@@ -49,8 +51,8 @@
 {/if}
 
 
-
 <script>
+    import CardType from "$lib/global/CardType.svelte";
     import UatList from "$lib/uats/UatList.svelte";
     import ProcedureList from "$lib/procedures/ProcedureList.svelte";
 
