@@ -849,7 +849,6 @@ class CreateTestResultView(View):
 
     **Body**
             {
-                "id": <int:test-id>,
                 "status": <str:status>,
                 "notes": <str:notes>
             }
@@ -861,6 +860,7 @@ class CreateTestResultView(View):
     **Parameters:**
     - 'auth_token': JWT-Authorization-Token passed as http-only-cookie
     - 'pk': Primary key of project in which procedure result should be created
+    - 'test_id': Primary key of test for which the result is
 
     """
     def post(self, request, *args, **kwargs):
@@ -887,7 +887,7 @@ class CreateTestResultView(View):
                 "Unauthorized", status=403
             )
         try:
-            acceptance_test = UserAcceptanceTest.objects.get(id=data.get('test_id'), project=project)
+            acceptance_test = UserAcceptanceTest.objects.get(id=kwargs.get('test_id'), project=project)
         except UserAcceptanceTest.DoesNotExist:
             return HttpResponse(
                 "Test does not exist or is not in your project", status=400
