@@ -1,8 +1,3 @@
-<script>
-    import CardType from "$lib/global/CardType.svelte";
-    export let uat;
-</script>
-
 <li id="#{uat.id}" 
     class="p-10 text-white shadow-xl outline
     max-w-sm w-full relative overflow-hidden rounded-lg
@@ -56,18 +51,20 @@
     </div>
 
     <div class="flex flex-row gap-4">
-        <a href="/projects/uats/{uat.id}"
+        <a href="{url}/tests/{uat.id}/results/new"
         class="hover:scale-105
         flex flex-row items-center gap-2
         btn-secondary hover:bg-white dark:text-white dark:hover:text-black
         hover:text-black text-white 
         transition-all">
 
-        <span style="background-image: url('/open.svg');" 
-            class="hover transition-all block icon w-5 h-5" />
+            <span style="background-image: url('/open.svg');" 
+                class="hover transition-all block icon w-5 h-5" />
+
             New Result
         </a>
-        <a href="/projects/uats/{uat.id}"
+
+        <a href="{url}/tests/{uat.id}"
             class="hover:scale-105
             flex flex-row items-center gap-2
             btn-secondary hover:bg-white dark:text-white dark:hover:text-black
@@ -80,6 +77,14 @@
         </a>
     </div>
 </li>
+
+<script>
+    import { page } from '$app/stores';
+    import CardType from "$lib/global/CardType.svelte";
+    export let uat;
+
+    let url = $page.url.pathname;
+</script>
 
 <style lang="postcss">
     .details-wrapper {

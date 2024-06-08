@@ -24,11 +24,11 @@ urlpatterns = [
     path('projects/<int:pk>/procedures/<int:procedure_id>/results/', TestProcedureResultListView.as_view(), name='test_procedure_results_view'), # Done 
     path('projects/<int:pk>/procedures/<int:procedure_id>/results/<int:result_id>/', TestProcedureResultDetailView.as_view(), name='test_procedure_results_detail_view'), # Done
 
-    path('projects/create/', CreateProjectView.as_view(), name='create_project_view'), # Done
-    path('projects/<int:pk>/tests/create/', CreateTestView.as_view(), name='create_test_view'),# Done
-    path('projects/<int:pk>/procedures/create/', CreateTestProcedureView.as_view(), name='create_test_procedure_view'), # Done
-    path('projects/<int:pk>/procedures/<int:procedure_id>/create/', CreateTestProcedureResultView.as_view(), name='create_test_procedure_result_view'), # Done
-    path('projects/<int:pk>/tests/<int:test_id>/results/create/', CreateTestResultView.as_view(), name='create_test_procedure_result_view'), # Done
+    path('projects/new/', CreateProjectView.as_view(), name='create_project_view'), # Done
+    path('projects/<int:pk>/tests/new/', CreateTestView.as_view(), name='create_test_view'),# Done
+    path('projects/<int:pk>/procedures/new/', CreateTestProcedureView.as_view(), name='create_test_procedure_view'), # Done
+    path('projects/<int:pk>/procedures/<int:procedure_id>/new/', CreateTestProcedureResultView.as_view(), name='create_test_procedure_result_view'), # Done
+    path('projects/<int:pk>/tests/<int:test_id>/results/new/', CreateTestResultView.as_view(), name='create_test_procedure_result_view'), # Done
 
 
     path('projects/<int:pk>/delete', DeleteProjectView.as_view(), name='delete_project_view'), # Done
