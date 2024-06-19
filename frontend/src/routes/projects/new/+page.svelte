@@ -1,5 +1,5 @@
-<section class="dark:bg-slate-600  flex flex-col items-center gap-5 
-    py-12 bg-slate-300">
+<section class="flex flex-col items-center gap-5 
+    py-12  visible">
 
     <h2 class="text-center text-xl font-mono font-extralight">
         Create New Project
@@ -47,7 +47,7 @@
             Create
         </button>
 
-        <button type="reset" class="btn-secondary">
+        <button on:click={() => goto("/")} type="reset" class="btn-secondary">
             Discard
         </button>
     </form>

@@ -1,4 +1,3 @@
-
 import json
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
@@ -177,15 +176,15 @@ class TestProcedureDetailView(View):
             project = Project.objects.get(pk=kwargs.get('pk'))        
 
         except Project.DoesNotExist:
-          return HttpResponse(
+            return HttpResponse(
                 "Project with pk does not exist", status=400
             )        
-  
+
         if not user in project.user_list.all() and profile.organization != project.organization:
             return HttpResponse(
                 "Unauthorized", status=403
             )
-        
+
         """
             Gets TestProcedure with procedure_id from key-word-arguments (kwargs)
         """
@@ -195,7 +194,7 @@ class TestProcedureDetailView(View):
             return HttpResponse(
                 "TestProcedure with pk does not exist", status=400
             )     
-        
+
         test_procedure_tests = []
 
         """
@@ -204,15 +203,15 @@ class TestProcedureDetailView(View):
         for test in test_procedure.acceptance_tests.all():
             test_procedure_tests.append(
                 {
-                    'creator': test.creator.id if test.creator else '',
-                    'project': test.project.id,
-                    'name': test.name,
-                    'description': test.description,
-                    'pre_conditions': test.pre_conditions,
-                    'steps': test.steps,
-                    'expected_result': test.expected_result,
-                    'created_at':test.created_at,
-
+                    "id": test.id,
+                    "creator": test.creator.id if test.creator else "",
+                    "project": test.project.id,
+                    "name": test.name,
+                    "description": test.description,
+                    "pre_conditions": test.pre_conditions,
+                    "steps": test.steps,
+                    "expected_result": test.expected_result,
+                    "created_at": test.created_at,
                 }
             )
 
@@ -282,7 +281,7 @@ class TestProcedureResultListView(View):
 
         
         return JsonResponse(test_procedure_result_list, safe=False)
-    
+
 class TestProcedureResultDetailView(View):
     """
     Details of testprocedure result (:model:`user_tests.TestProcedureResult`) with associated testresults (:model:`user_tests.UserAcceptanceTest`) .
@@ -956,7 +955,7 @@ class CreateTestProcedureResultView(View):
         return HttpResponse(
                 "created", status=201
         )
-    
+
 class CreateTestResultView(View):
     """
         Checks for csrf_token to prevent cross-site-request-forgery
@@ -1130,7 +1129,7 @@ class DeleteTestView(View):
         return HttpResponse(
             "deleted", status=200
         )
-    
+
 class DeleteTestProcedureView(View):
     """
         Checks for csrf_token to prevent cross-site-request-forgery
@@ -1187,7 +1186,7 @@ class DeleteTestProcedureView(View):
         return HttpResponse(
             "deleted", status=200
         )
-    
+
 class DeleteTestProcedureResultsView(View):
 
     @method_decorator(csrf_exempt)

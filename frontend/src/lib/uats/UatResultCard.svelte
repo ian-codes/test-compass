@@ -4,12 +4,12 @@
 </script>
 
 <li id="#{uatResult.id}" 
-    class="p-10 text-white rounded-lg shadow-xl
-    max-w-sm w-full relative
+    class="p-10 text-white shadow-xl outline max-w-sm w-full
+    relative overflow-hidden rounded-lg outline-1
     bg-gradient-to-tr from-yellow-500 to-amber-600
-    flex flex-col justify-between gap-5">
+    flex flex-col justify-between gap-5 flex-auto">
 
-    <CardType type={"Test"} />
+    <CardType type={"Test Result"} />
 
     <span class="absolute text-sm top-0 right-0 p-4 opacity-60">
         <span class="select-none">
@@ -21,63 +21,17 @@
     </span>
 
     <div class="flex flex-col justify-between items-start">
-        <span class="font-extralight text-md">Name</span>
+        <span class="font-extralight text-sm opacity-70">Status</span>
         <h3 class="text-2xl font-bold">
-            {uatResult.name}
+            {uatResult.status}
         </h3>
     </div>
 
     <div class="flex flex-col justify-between items-start">
-        <span class="font-extralight text-md">Description</span>
+        <span class="font-extralight text-sm opacity-70">Notes</span>
         <p class="text-xl">
-            {uatResult.description}
+            {uatResult.notes}
         </p>
-    </div>
-
-    <div class="flex flex-col justify-between items-start">
-        <span class="font-extralight text-md">Preconditions</span>
-        <p class="text-xl">
-            {uatResult.pre_conditions}
-        </p>
-    </div>
-
-    <div class="flex flex-col justify-between items-start">
-        <span class="font-extralight text-md">Steps</span>
-        <p class="text-xl">
-            {uatResult.steps}
-        </p>
-    </div>
-
-    <div class="flex flex-col justify-between items-start">
-        <span class="font-extralight text-md">Expected Result</span>
-        <p class="text-xl">
-            {uat.expected_result}
-        </p>
-    </div>
-
-    <div class="flex flex-row gap-4">
-        <a href="/projects/uats/{uat.id}"
-        class="hover:scale-105
-        flex flex-row items-center gap-2
-        btn-secondary hover:bg-white dark:text-white dark:hover:text-black
-        hover:text-black text-white 
-        transition-all">
-
-        <span style="background-image: url('/open.svg');" 
-            class="hover transition-all block icon w-5 h-5" />
-            New Result
-        </a>
-        <a href="/projects/uats/{uat.id}"
-            class="hover:scale-105
-            flex flex-row items-center gap-2
-            btn-secondary hover:bg-white dark:text-white dark:hover:text-black
-            hover:text-black text-white 
-            transition-all">
-            
-            <span style="background-image: url('/open.svg');" 
-                class="hover transition-all block icon w-5 h-5" />
-            Details
-        </a>
     </div>
 </li>
 

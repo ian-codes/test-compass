@@ -9,11 +9,17 @@ h2 {
     @apply text-xl font-extralight uppercase tracking-widest
 }
 section {
-    @apply max-w-4xl w-full p-8 dark:outline-slate-700 rounded-md outline-slate-300 
-    outline-1 outline
+    @apply max-w-4xl w-full p-8 dark:outline-slate-700 rounded-md outline-slate-300 relative
+    outline-1 outline bg-gradient-to-br from-slate-200 to-slate-100 dark:from-slate-800 dark:to-slate-900
+}
+section::before {
+    @apply absolute rounded-md inset-0 bg-repeat opacity-5 pointer-events-none;
+    background-image: url('/noise.png');
+    background-size: 10%;
+    content: '';
 }
 input, textarea {
-    @apply p-2 rounded-md outline outline-1 outline-slate-300
+    @apply p-2 rounded-md outline outline-1 outline-slate-300 dark:text-black
 }
 .input-container {
     @apply flex flex-col gap-1 w-full
@@ -22,12 +28,21 @@ input, textarea {
     @apply outline !outline-red-400 outline-2
 }
 .btn {
-    @apply dark:text-black shadow-md font-bold text-white hover:text-primary hover:bg-white hover:scale-105
-     hover:outline-primary hover:outline transition-all
-     bg-primary mt-5 px-4 py-2 rounded-lg w-full
+    @apply dark:text-black dark:hover:text-primary shadow-md font-bold text-white hover:text-primary hover:bg-transparent hover:scale-105
+        hover:outline-primary hover:outline outline-2 transition-all
+        bg-primary mt-5 px-4 py-2 rounded-lg w-full
 }
 .btn-secondary {
-    @apply dark:text-black outline-white outline outline-1 mt-5 px-4 py-2 rounded-lg w-full
+    @apply text-slate-500 dark:hover:text-black
+    hover:scale-105 transition-all hover:bg-slate-400 hover:text-white
+    dark:text-slate-300 outline-slate-400 outline outline-1 mt-5 px-4 py-2 rounded-lg w-full
+}
+.btn-tertiary {
+    @apply hover:scale-105 transition-all outline-white outline outline-1 
+    mt-5 px-4 py-2 rounded-lg w-full hover:bg-white dark:text-white 
+    dark:hover:text-black
+    hover:text-black text-white 
+
 }
 .icon {
     @apply bg-center bg-no-repeat bg-contain

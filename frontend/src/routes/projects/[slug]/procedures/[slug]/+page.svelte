@@ -19,36 +19,27 @@
                     {data.slug}
                 </span>
             </span>
-            <p class="text-center mt-10">
-                {procedure.description}
-            </p>
 
-
-            <div class="tap-container mt-24 mb-6 border-b-2
-                {(activeTab == "results" ? "border-purple-300" : "border-orange-300")}
-                flex my-10flex-row justify-center">
-
-                <button on:click={() => activeTab = "uats"}
-                    class="tab uats"
-                    class:activeTab={activeTab == "uats"}>
-                    User Acceptance Tests
-                </button>
-
-                <button on:click={() => activeTab = "results"}
-                    class="tab results"
-                    class:activeTab={activeTab == "results"}>
-                    Test Procedure Results
-                </button>
+            <div class="flex flex-col gap-10">
+                <div class="flex flex-col justify-between items-start">
+                    <span class="font-extralight text-md">Description</span>
+                    <p class="text-xl">
+                        {procedure.description}
+                    </p>
+                </div>
             </div>
 
-            <UatList
-                uats={tests}
-                bind:activeTab={activeTab} />
+            <div class="mt-24">
+                <UatList
+                    buttonEnabled={false}
+                    uats={tests}
+                    bind:activeTab={activeTab} />
+            </div>
 
-            <ProcedureResultList 
+            <!-- <ProcedureResultList 
                 slug={data.slug} 
                 procedureResults={procedureResults}
-                bind:activeTab={activeTab} />
+                bind:activeTab={activeTab} /> -->
         </section>
     </div>
 {/if}
@@ -74,6 +65,6 @@
         @apply bg-purple-300
     }
     .activeTab.uats {
-        @apply bg-orange-300
+        @apply bg-orange-400
     }
 </style>

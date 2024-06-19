@@ -9,7 +9,7 @@
         </h2>
 
         <form on:submit|preventDefault={handleSubmit}
-            class="flex max-w-sm w-full gap-2 flex-col items-center justify-center">
+            class="flex max-w-sm w-full gap-4 flex-col items-center justify-center">
 
             <div class="input-container">
                 <label for="name">
@@ -40,52 +40,66 @@
                     class="resize-y h-16 max-h-32"></textarea>
             </div>
 
-            <div class="input-container p-2 outline-1 outline rounded-lg outline-slate-400">
-                <label for="tests" 
-                    class="relative flex flex-row justify-between items-center">
+            {#if tests.length}
+                <div class="input-container mt-4 p-2 outline-1 outline rounded-lg outline-slate-400">
+                    <label for="tests" 
+                        class="relative flex flex-row justify-between items-center">
 
-                    <button type="button"
-                        class="absolute inset-0 opacity-0" 
-                        on:click={() => showTests = !showTests} />
+                        <button type="button"
+                            class="absolute inset-0 opacity-0" 
+                            on:click={() => showTests = !showTests} />
 
-                    Add User Acceptance Tests
+                        User Acceptance Tests ({chosenTests.length})
 
-                    <span style="background-image: url('/expand.svg');"
-                        class="inline-block invert dark:invert-0 bg-no-repeat 
-                        bg-center bg-contain w-4 h-4 {(showTests ? "rotate-180" : "")}" />
-                </label>
+                        <span style="background-image: url('/expand.svg');"
+                            class="inline-block invert dark:invert-0 bg-no-repeat 
+                            bg-center bg-contain w-4 h-4 {(showTests ? "rotate-180" : "")}" />
+                    </label>
 
-                <ol name="tests" class="hidden mt-4 flex-col gap-2"
-                    class:show={showTests}>
-                    {#each tests as test}
-                        <li class="relative p-2 bg-slate-300 outline rounded-lg"
-                            class:chosen={chosenTests.includes(test)}>
-                            <button 
-                                type="button" 
-                                class="absolute inset-0 opacity-0" 
-                                on:click={() => handleTestClick(test)}/>
-    
-                            {test.name}
-                        </li>
-                    {/each}
-                </ol>
-            </div>
+                    <ol name="tests" class="hidden mt-4 flex-col gap-2"
+                        class:show={showTests}>
+                        {#each tests as test}
+                            <li class="relative gap-4 flex flex-row items-baseline justify-between p-2 outline-slate-400 outline outline-1 rounded-lg"
+                                class:chosen={chosenTests.includes(test)}>
+                                <button 
+                                    type="button" 
+                                    class="absolute inset-0 opacity-0" 
+                                    on:click={() => handleTestClick(test)}/>
+        
+                                <span>
+                                    {test.name}
+                                </span>
 
+                                <span class="text-sm opacity-60">
+                                    <span class="select-none">
+                                        ID:
+                                    </span>
+                                    <span>
+                                        {test.id}
+                                    </span>
+                                </span>
+                            </li>
+                        {/each}
+                    </ol>
+                </div>
+            {/if}
 
             {#if createFailed}
                 <p>Failed to create test procedure.</p>
             {/if}
 
-            <button type="submit" class="btn">
-                Create
-            </button>
-
-            <button 
-                on:click={() => goto(back_url)}
-                type="reset" 
-                class="btn-secondary">
-                Discard
-            </button>
+            <div class="w-full">
+                <button type="submit" class="btn">
+                    Create
+                </button>
+    
+                <button 
+                    on:click={() => goto(back_url)}
+                    type="reset" 
+                    class="btn-secondary">
+                    Discard
+                </button>
+            </div>
         </form>
     </section>
 {/if}
@@ -170,7 +184,7 @@
 
 <style lang="postcss">
     .chosen {
-        @apply bg-green-200;
+        @apply bg-gradient-to-bl from-orange-300 to-orange-400 text-black;
     }
     .show {
         display: flex !important;

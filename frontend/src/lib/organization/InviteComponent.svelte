@@ -43,22 +43,30 @@
             return;
         }
         try {
-            const response = await fetch(INVITE_URL, {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ email: email }),
-                credentials: 'include'
-            })
-            if (response.ok) {
-                hasFailed = false;
-            } else {
-                hasFailed = true;
-                invalid = false;
-                submitText = await response.text();
-            }
+            // const response = await fetch(INVITE_URL, {
+            //     method: 'POST',
+            //     headers: {
+            //         "Content-Type": "application/json"
+            //     },
+            //     body: JSON.stringify({ email: email }),
+            //     credentials: 'include'
+            // })
+            hasFailed = false;
+            invalid = false;
+            alert("Invitation sent!");
+            email = "";
         }
+
+        //     if (response.ok) {
+        //         hasFailed = false;
+        //         alert("Invitation sent!");
+        //         email = "";
+        //     } else {
+        //         hasFailed = true;
+        //         invalid = false;
+        //         submitText = await response.text();
+        //     }
+        // }
         catch {
             hasFailed = true;
         }

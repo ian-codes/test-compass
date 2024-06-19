@@ -1,8 +1,8 @@
 <li id="#{project.id}" 
     class="p-10 text-white rounded-lg shadow-xl
-    max-w-sm w-full relative outline
-    bg-gradient-to-br from-cyan-500 to-blue-600 overflow-hidden
-    flex flex-col justify-between gap-5">
+    max-w-sm w-full relative outline outline-1
+    bg-gradient-to-br from-cyan-600 to-blue-700 overflow-hidden
+    flex flex-col justify-between gap-5 flex-auto">
 
     <CardType type={"Project"} />
 
@@ -16,15 +16,15 @@
     </span>
 
     <div class="flex flex-col justify-between items-start">
-        <span class="font-extralight text-md">Name</span>
+        <span class="font-extralight text-sm opacity-70">Name</span>
         <h3 class="text-2xl font-bold">
             {project.name}
         </h3>
     </div>
 
     <div class="flex flex-col justify-between items-start">
-        <span class="font-extralight text-md">Description</span>
-        <p class="text-xl">
+        <span class="font-extralight text-sm opacity-70">Description</span>
+        <p class="text-lg">
             {project.description}
         </p>
     </div>
@@ -32,9 +32,7 @@
     <a href="/projects/{project.id}"
         class="hover:scale-105
         flex flex-row items-center gap-2
-        btn-secondary hover:bg-white dark:text-white dark:hover:text-black
-        hover:text-black text-white 
-        transition-all">
+        btn-tertiary">
         
         <span style="background-image: url('/open.svg');" 
             class="hover transition-all block icon w-5 h-5" />

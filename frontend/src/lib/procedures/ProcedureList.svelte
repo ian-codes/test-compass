@@ -11,7 +11,7 @@
         </button>
     </div>
 
-    <ol class="flex flex-wrap items-center justify-center gap-y-12 gap-x-4">
+    <ol class="flex flex-wrap justify-center gap-y-12 gap-x-4">
         {#each procedures as procedure}
             <ProcedureCard procedure={procedure} />
         {/each}

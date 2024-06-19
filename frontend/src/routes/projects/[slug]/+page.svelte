@@ -11,6 +11,7 @@
             <h1 class="text-3xl text-center">
                 {project.name}
             </h1>
+            
             <span class="absolute text-sm top-0 right-0 p-4 opacity-60">
                 <span class="select-none">
                     ID:
@@ -19,32 +20,40 @@
                     {project.id}
                 </span>
             </span>
-            <p class="text-center mt-10">
-                {project.description}
-            </p>
+
+            <div class="flex flex-col gap-10">
+                <div class="flex flex-col justify-between items-start">
+                    <span class="font-extralight text-md">Description</span>
+                    <p class="text-xl">
+                        {project.description}
+                    </p>
+                </div>
+            </div>
 
             <div class="tap-container mt-24 mb-6 border-b-2
-                {(activeTab == "procedures" ? "border-purple-300" : "border-orange-300")}
+                {(activeTab == "procedures" ? "border-purple-400" : "border-orange-300")}
                 flex my-10flex-row justify-center">
+
+                <button on:click={() => activeTab = "uats"}
+                    class="tab uats"
+                    class:activeTab={activeTab == "uats"}>
+                    User Acceptance Tests
+                </button>
 
                 <button on:click={() => activeTab = "procedures"}
                     class="tab procedures"
                     class:activeTab={activeTab == "procedures"}>
                     Test Procedures
                 </button>
-                <button on:click={() => activeTab = "uats"}
-                    class="tab uats"
-                    class:activeTab={activeTab == "uats"}>
-                    User Acceptance Tests
-                </button>
             </div>
+
+            <UatList 
+                buttonEnabled={true}
+                uats={uats} 
+                bind:activeTab={activeTab} />
 
             <ProcedureList 
                 procedures={procedures} 
-                bind:activeTab={activeTab} />
-
-            <UatList 
-                uats={uats} 
                 bind:activeTab={activeTab} />
         </section>
     </div>
@@ -61,7 +70,7 @@
     let procedures = data.procedures;
     let uats = data.uats;
 
-    let activeTab = "procedures";
+    let activeTab = "uats";
 
     $: isLoading = !project && !procedures && !uats
 </script>
@@ -69,7 +78,7 @@
 
 <style lang="postcss">
     .activeTab.procedures {
-        @apply bg-purple-300
+        @apply bg-purple-400
     }
     .activeTab.uats {
         @apply bg-orange-300
