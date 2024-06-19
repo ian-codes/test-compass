@@ -5,7 +5,7 @@
         gap-4 w-full m-auto mt-0"
         class:visible={!isLoading}>
 
-        <section class="flex flex-col gap-4 relative text-center">
+        <section class="flex flex-col gap-4 relative text-center overflow-hidden">
             <CardType type="User Acceptance Test" />
 
             <h1 class="text-3xl mb-10">
@@ -21,7 +21,7 @@
                 </span>
             </span>
 
-            <div class="flex flex-col gap-10">
+            <div class="flex flex-col gap-10 py-8">
                 <div class="flex flex-col justify-between items-start">
                     <span class="font-extralight text-md">Description</span>
                     <p class="text-xl">
@@ -58,16 +58,9 @@
                 </div>
             </div>
 
-            <div class="tap-container mt-24 mb-6 border-b-2
-                border-orange-300 flex my-10flex-row justify-center">
-
-                <button type="button" on:click={() => {return;}}
-                    class="tab uats bg-orange-300 activeTab">
-                    Test Results
-                </button>
+            <div class="mt-12">
+                <UatResultList slug={data.slug} uatResults={testResults} />
             </div>
-
-            <UatResultList slug={data.slug} uatResults={testResults} />
         </section>
     </div>
 {/if}

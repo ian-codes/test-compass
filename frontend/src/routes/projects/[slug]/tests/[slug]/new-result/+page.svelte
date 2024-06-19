@@ -47,7 +47,7 @@
         </button>
 
         <button 
-            on:click={() => goto(back_url)}
+            on:click={() => goto($backUrl)}
             type="reset" 
             class="btn-secondary">
             Discard
@@ -57,6 +57,8 @@
 
 
 <script>
+    import { backUrl } from '$lib/backUrlStore.js';
+
     import { page} from "$app/stores";
     import { goto } from "$app/navigation.js";
 
@@ -90,7 +92,7 @@
             const response = await makeRequest(requestUrl);
             if (response.ok) {
                 createFailed = false;
-                goto(back_url);
+                goto($backUrl);
             } else {
                 createFailed = true;
             }

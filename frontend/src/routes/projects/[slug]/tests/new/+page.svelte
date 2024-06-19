@@ -1,5 +1,5 @@
-<section class="dark:bg-slate-700  flex flex-col items-center gap-5 
-    py-12 bg-slate-200">
+<section class="flex flex-col items-center gap-5 
+    py-12">
 
     <h2 class="text-center text-xl font-mono font-extralight">
         New User Acceptance Test
@@ -116,6 +116,7 @@
         name: "",
         description: "",
         pre_conditions: "",
+        steps: "",
         expected_result: ""
     }
 
@@ -123,6 +124,7 @@
         name: false,
         description: false,
         pre_conditions: false,
+        steps: false,
         expected_result: false
     }
 
@@ -135,6 +137,7 @@
             const response = await makeCreateProcedurePostRequest();
             if (response.ok) {
                 createFailed = false;
+                alert("User Acceptance Test was created!");
                 goto(back_url);
             } else {
                 createFailed = true;
@@ -147,6 +150,9 @@
     function areInputsValid() {
         errors.name = !uat.name.trim();
         errors.description = !uat.description.trim();
+        errors.steps = !uat.steps.trim();
+        errors.pre_conditions = !uat.pre_conditions.trim();
+        errors.expected_result = !uat.expected_result.trim();
         return !Object.values(errors).includes(true);
     }
 

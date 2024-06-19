@@ -31,7 +31,7 @@
             </div>
 
             <div class="tap-container mt-24 mb-6 border-b-2
-                {(activeTab == "procedures" ? "border-purple-300" : "border-orange-300")}
+                {(activeTab == "procedures" ? "border-purple-400" : "border-orange-300")}
                 flex my-10flex-row justify-center">
 
                 <button on:click={() => activeTab = "uats"}
@@ -78,7 +78,7 @@
 
 <style lang="postcss">
     .activeTab.procedures {
-        @apply bg-purple-300
+        @apply bg-purple-400
     }
     .activeTab.uats {
         @apply bg-orange-300

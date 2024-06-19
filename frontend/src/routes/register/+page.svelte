@@ -162,6 +162,7 @@
                 throw new Error('Network response was not ok');
             }
             else {
+                alert("Successfully registered!");
                 goto("/");
             }
         }

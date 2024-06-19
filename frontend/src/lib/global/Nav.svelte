@@ -8,8 +8,8 @@
     </button>
 
     <ul class="{(isOpen ? "right-0 w-full" : "-right-full w-0")} z-10 transition-all 
-        absolute pt-24 max-w-fulldark:bg-slate-700 outline dark:bg-slate-700 bg-slate-200 top-0 h-min 
-        bottom-0 flex flex-col">
+        absolute pt-24 max-w-fulldark:bg-slate-700 outline-1 dark:bg-slate-700 bg-slate-200 top-0 h-min 
+        bottom-0 flex flex-col shadow-lg">
 
         {#if $loggedIn}
             <NavItem 
