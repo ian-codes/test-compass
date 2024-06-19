@@ -1,0 +1,79 @@
+Date : 2024-06-08 20:04:17
+Directory : /Users/ilianhaesler/DEV/test_compass/test-compass/backend
+Total : 42 files,  2258 codes, 49 comments, 548 blanks, all 2855 lines
+
+Languages
++------------------+------------+------------+------------+------------+------------+
+| language         | files      | code       | comment    | blank      | total      |
++------------------+------------+------------+------------+------------+------------+
+| Python           |         36 |      2,201 |         49 |        547 |      2,797 |
+| XML              |          5 |         44 |          0 |          0 |         44 |
+| pip requirements |          1 |         13 |          0 |          1 |         14 |
++------------------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                       | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                          |         42 |      2,258 |         49 |        548 |      2,855 |
+| . (Files)                                                                                                                  |          2 |         30 |          1 |          7 |         38 |
+| .idea                                                                                                                      |          5 |         44 |          0 |          0 |         44 |
+| .idea (Files)                                                                                                              |          4 |         38 |          0 |          0 |         38 |
+| .idea/inspectionProfiles                                                                                                   |          1 |          6 |          0 |          0 |          6 |
+| organizations                                                                                                              |         13 |        519 |          7 |        124 |        650 |
+| organizations (Files)                                                                                                      |          8 |        425 |          3 |         98 |        526 |
+| organizations/migrations                                                                                                   |          5 |         94 |          4 |         26 |        124 |
+| testcompass_backend                                                                                                        |          8 |        225 |         21 |         70 |        316 |
+| user_tests                                                                                                                 |         14 |      1,440 |         20 |        347 |      1,807 |
+| user_tests (Files)                                                                                                         |          8 |      1,306 |         15 |        315 |      1,636 |
+| user_tests/migrations                                                                                                      |          6 |        134 |          5 |         32 |        171 |
++----------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------------------------------------------------------------------------+------------------+------------+------------+------------+------------+
+| filename                                                                                                                   | language         | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------------------------------------+------------------+------------+------------+------------+------------+
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/.idea/backend.iml                                                | XML              |         14 |          0 |          0 |         14 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/.idea/inspectionProfiles/profiles_settings.xml                   | XML              |          6 |          0 |          0 |          6 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/.idea/misc.xml                                                   | XML              |         10 |          0 |          0 |         10 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/.idea/modules.xml                                                | XML              |          8 |          0 |          0 |          8 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/.idea/vcs.xml                                                    | XML              |          6 |          0 |          0 |          6 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/manage.py                                                        | Python           |         17 |          1 |          6 |         24 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/organizations/__init__.py                                        | Python           |          0 |          0 |          1 |          1 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/organizations/admin.py                                           | Python           |          6 |          0 |          3 |          9 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/organizations/apps.py                                            | Python           |          4 |          0 |          3 |          7 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/organizations/migrations/0001_made_first_models.py               | Python           |         34 |          1 |          7 |         42 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/organizations/migrations/0002_rename_profile.py                  | Python           |         15 |          1 |          6 |         22 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/organizations/migrations/0003_add_invite_model.py                | Python           |         22 |          1 |          6 |         29 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/organizations/migrations/0004_add_custom_token.py                | Python           |         23 |          1 |          6 |         30 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/organizations/migrations/__init__.py                             | Python           |          0 |          0 |          1 |          1 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/organizations/models.py                                          | Python           |         65 |          0 |         16 |         81 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/organizations/schemas.py                                         | Python           |         16 |          0 |          1 |         17 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/organizations/tests.py                                           | Python           |         60 |          1 |          9 |         70 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/organizations/urls.py                                            | Python           |         15 |          0 |          2 |         17 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/organizations/views.py                                           | Python           |        259 |          2 |         63 |        324 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/requirements.txt                                                 | pip requirements |         13 |          0 |          1 |         14 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/testcompass_backend/__init__.py                                  | Python           |          0 |          0 |          1 |          1 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/testcompass_backend/asgi.py                                      | Python           |         10 |          0 |          7 |         17 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/testcompass_backend/authentication.py                            | Python           |         25 |          0 |          6 |         31 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/testcompass_backend/middleware.py                                | Python           |          7 |          5 |          5 |         17 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/testcompass_backend/settings.py                                  | Python           |          4 |          0 |          1 |          5 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/testcompass_backend/settings_dev.py                              | Python           |        146 |         16 |         39 |        201 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/testcompass_backend/urls.py                                      | Python           |         23 |          0 |          4 |         27 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/testcompass_backend/wsgi.py                                      | Python           |         10 |          0 |          7 |         17 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/user_tests/__init__.py                                           | Python           |          0 |          0 |          1 |          1 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/user_tests/admin.py                                              | Python           |          7 |          0 |          2 |          9 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/user_tests/apps.py                                               | Python           |          4 |          0 |          3 |          7 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/user_tests/middleware.py                                         | Python           |         16 |          0 |          5 |         21 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/user_tests/migrations/0001_made_first_test_models.py             | Python           |         68 |          1 |          7 |         76 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/user_tests/migrations/0002_add_user_list_to_project.py           | Python           |         14 |          1 |          6 |         21 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/user_tests/migrations/0003_add_many_to_many_to_test_procedure.py | Python           |         22 |          1 |          6 |         29 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/user_tests/migrations/0004_add_status_and_notes_to_result.py     | Python           |         17 |          1 |          6 |         24 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/user_tests/migrations/0005_made_field_not_required.py            | Python           |         13 |          1 |          6 |         20 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/user_tests/migrations/__init__.py                                | Python           |          0 |          0 |          1 |          1 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/user_tests/models.py                                             | Python           |         84 |          0 |         25 |        109 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/user_tests/tests.py                                              | Python           |        148 |          3 |         30 |        181 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/user_tests/urls.py                                               | Python           |         32 |          0 |         13 |         45 |
+| /Users/ilianhaesler/DEV/test_compass/test-compass/backend/user_tests/views.py                                              | Python           |      1,015 |         12 |        236 |      1,263 |
+| Total                                                                                                                      |                  |      2,258 |         49 |        548 |      2,855 |
++----------------------------------------------------------------------------------------------------------------------------+------------------+------------+------------+------------+------------+
